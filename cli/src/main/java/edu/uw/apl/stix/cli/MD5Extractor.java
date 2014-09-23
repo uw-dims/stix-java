@@ -69,7 +69,7 @@ public class MD5Extractor {
 
 	private void start() throws Exception {
 		STIXType package_ = Codec.unmarshal( inFile );
-		System.out.println( package_ );
+		//		System.out.println( package_ );
 		List<String> md5s = HashExtractors.extractMD5HexBinary( package_ );
 		for( String md5 : md5s )
 			System.out.println( md5 );
