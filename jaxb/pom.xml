@@ -1,13 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <groupId>edu.uw.apl.dims</groupId>
+  
+  <parent>
+    <groupId>edu.uw.apl.commons</groupId>
+    <artifactId>stix-parent</artifactId>
+    
+    <!-- 
+	 Our major version number encodes the Mitre STIX release.  We
+	 adhere to Semantic Versioning, see http://semver.org
+    -->
+    <version>111.0.0</version>
+  </parent>
+  
   <artifactId>stix-jaxb</artifactId>
   <packaging>jar</packaging>
-  <!-- Our major version number encodes the Mitre STIX release -->
-  <version>111.0.0</version>
-  <url>http://maven.apache.org</url>
   
   <dependencies>
     <dependency>
@@ -41,6 +48,7 @@
 	      <schemaDirectory>
 	      ${project.basedir}/src/main/resources/1.1.1</schemaDirectory>
 	      <schemaIncludes>
+		<!-- The uber file was built with xsdwalker -->
 		<include>uber.xsd</include> 
 	      </schemaIncludes>
 	      <bindingIncludes>
