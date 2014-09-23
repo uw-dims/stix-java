@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>edu.uw.apl.commons</groupId>
+  <artifactId>stix-parent</artifactId>
+  <packaging>pom</packaging>
+
+  <!-- 
+       Our major version number encodes the Mitre STIX release.  We
+       adhere to Semantic Versioning, see http://semver.org
+  -->
+  <version>111.0.0</version>
+
+  <name>STIX Java</name>
+  <description>A Java Binding To Mitre's STIX language</description>
+
+  <developers>
+    <developer>
+      <id>maclean</id>
+      <name>Stuart Maclean</name>
+      <email>stuart@apl.uw.edu</email>
+    </developer>
+  </developers>
+
+  <modules>
+    <module>jaxb</module>
+    <module>utils</module>
+    <module>cli</module>
+  </modules>
+
+</project>

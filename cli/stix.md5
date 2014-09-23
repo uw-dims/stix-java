@@ -1,0 +1,12 @@
+#!/bin/sh
+
+ARTIFACT=stix-cli
+VERSION=111.0.0
+
+JAR=$ARTIFACT-$VERSION.jar
+
+CLAZZ=edu.uw.apl.stix.cli.MD5Extractor
+
+exec java -cp target/$JAR $CLAZZ "$@"
+
+# eof
