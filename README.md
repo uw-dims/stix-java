@@ -30,7 +30,7 @@ $ cd stix-java
 
 $ mvn install
 
-To then try out a cli tool:
+To then try out a bundled command line interface (cli) tool:
 
 $ cd stix-java/cli
 
