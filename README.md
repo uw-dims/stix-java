@@ -36,7 +36,9 @@ $ cd stix-java/cli
 
 $ ./stix.md5 ../jaxb/src/test/resources/APT1/Appendix_G_IOCs_Full.xml
 
-which should print a list of 1797 md5 hashes to stdout.
+which should print a list of 1797 md5 hashes to stdout. The stix.md5
+file is a simple bash script driving the JVM invocation of the
+appropriate class.
 
 JAXB Issues
 ===========
