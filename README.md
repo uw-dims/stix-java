@@ -27,11 +27,13 @@ elsewhere) in src/test/resources.
 To build:
 
 $ cd stix-java
+
 $ mvn install
 
 To then try out a cli tool:
 
 $ cd stix-java/cli
+
 $ ./stix.md5 ../jaxb/src/test/resources/APT1/Appendix_G_IOCs_Full.xml
 
 which should print a list of 1797 md5 hashes to stdout.
