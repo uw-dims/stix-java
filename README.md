@@ -14,11 +14,13 @@ resolved by Maven. The author uses Maven 2.2.1 on Ubuntu 12.04 LTS.
 INSTALLATION
 ============
 
-Currently this is a 3-module codebase:
+Currently this codebase is organised as three Maven 'modules', with a
+parent pom at the root level.
 
 * Module 1: the jaxb bindings.  Java classes auto-generated from .xsd
-file set via xjc.  Includes some sample STIX documents (from Mitre and
-elsewhere) in src/test/resources.
+file set via xjc. xjc is bundled with recent JDK releases (1.6+). This
+module includes some sample STIX documents (from Mitre and elsewhere).
+See under jaxb/src/test/resources.
 
 * Module 2: utils. Example routines for extracting content from a STIX package.  Eventually, authoring utils would be added too.
 
