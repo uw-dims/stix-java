@@ -69,4 +69,4 @@ For some documentation on xsdwalker, see
 
 https://github.com/UW-APL-EIS/xsdwalker/blob/master/doc/xsdwalker-STIX-SeattleJavaUserGroup.pdf
 
-- eof
+eof
