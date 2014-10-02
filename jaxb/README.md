@@ -53,7 +53,7 @@ The exact derivation of our uber xsd file was then:
 ```
 $ cd stix-java/jaxb/src/main/resources/1.1.1/
 
-$ xsdwalker *.xsd cybox_v2.1/ extensions/-e extensions/test_mechanism/oval_5.10_test_mechanism.xsd -e extensions/vulnerability/cvrf_1.1_vulnerability.xsd  -u 1.1.1
+$ xsdwalker *.xsd cybox_v2.1/ extensions/ -e extensions/test_mechanism/oval_5.10_test_mechanism.xsd -e extensions/vulnerability/cvrf_1.1_vulnerability.xsd  -u 1.1.1
 ```
 
 The -e options exclude the specified files/directories from the xsd
