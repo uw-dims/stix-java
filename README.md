@@ -1,5 +1,18 @@
-README file for stix-jaxb, Stuart Maclean, Sep 2014
+README file for stix-java, Stuart Maclean, Sep 2014
 ===================================================
+
+A Java binding to Mitre's STIX xsd file set. See http://stix.mitre.org.
+
+The goal is to generate Java bindings to the .xsd files with a minimum
+of 'locally added' logic, i.e. we preserve package names, etc.  Where
+we simply MUST make decisions locally, essentially to resolve name
+clashes, we use a .xjb file as standard for xjc.
+
+To answer the question 'Are these bindings any good?', we try to
+assert Yes by consuming into a Java program a series of sample STIX
+documents.  See the test cases in ./jaxb/src/test/java and the sample
+documents in ./jaxb/src/test/resources. Most samples were obtained from
+https://stix.mitre.org/language/version1.1.1/samples/stix1.1.1-samples-all.zip.
 
 PRE-REQUISITES
 ==============
@@ -41,32 +54,5 @@ $ ./stix.md5 ../jaxb/src/test/resources/APT1/Appendix_G_IOCs_Full.xml
 which should print a list of 1797 md5 hashes to stdout. The stix.md5
 file is a simple bash script driving the JVM invocation of the
 appropriate class.
-
-JAXB Issues
-===========
-
-At time of writing, the STIX schema file set used for Java class
-generation was version 1.1.1.  See
-https://stix.mitre.org/language/version1.1.1/stix_v1.1.1.zip.
-
-Downloading this package and running xjc on the file set leads to a
-myriad of xjc complaints/errors.  To combat these, the author wrote a
-preprocessing tool which first scans the xsd file graph (all supplied
-files plus all those reachable via schema imports, and so on
-recursively).  This tool (https://github.com/UW-APL-EIS/xsdwalker)
-then outputs an 'uber' xsd consisting solely of imports of all the xsd
-files known to cause xjc NO errors.  
-
-Some released .xsd files were problemmatic and thus 'excluded' from
-the 'uber' xsd file.  This means that there may be valid STIX
-documents which cannot be correctly ingested by these jaxb bindings.
-Similarly, there will be STIX constructs which cannot be authored
-using these Java bindings.  Specifically, we excluded from our uber
-set the './extensions/vulnerability' directory and the
-'./extensions/test_mechanism/oval.xsd'. file.
-
-For some documentation on xsdwalker, see
-
-https://github.com/UW-APL-EIS/xsdwalker/blob/master/doc/xsdwalker-STIX-SeattleJavaUserGroup.pdf
 
 eof

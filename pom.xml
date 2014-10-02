@@ -15,6 +15,14 @@
   <name>STIX Java</name>
   <description>A Java Binding To Mitre's STIX language</description>
 
+  <licenses>
+    <license>
+      <name>New BSD license</name>
+      <url>http://www.opensource.org/licenses/bsd-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <developers>
     <developer>
       <id>maclean</id>
