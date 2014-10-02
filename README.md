@@ -4,9 +4,10 @@ README file for stix-java, Stuart Maclean, Sep 2014
 A Java binding to Mitre's STIX xsd file set. See http://stix.mitre.org.
 
 The goal is to generate Java bindings to the .xsd files with a minimum
-of 'locally added' logic, i.e. we preserve package names, etc.  Where
-we simply MUST make decisions locally, essentially to resolve name
-clashes, we use a .xjb file as standard for xjc.
+of 'locally added' logic.  We made zero edits to any xsd files.  We
+preserve package names, etc.  Where we simply MUST make decisions
+locally, essentially to resolve name clashes, we use a .xjb file as
+standard for xjc.
 
 To answer the question 'Are these bindings any good?', we try to
 assert Yes by consuming into a Java program a series of sample STIX
