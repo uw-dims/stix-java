@@ -35,6 +35,9 @@ file set via xjc. xjc is bundled with recent JDK releases (1.6+). This
 module includes some sample STIX documents (from Mitre and elsewhere).
 See under jaxb/src/test/resources.
 
+Getting the xsd file set to build took some work. See ./jaxb/README.md
+for more details.
+
 * Module 2: utils. Example routines for extracting content from a STIX package.  Eventually, authoring utils would be added too.
 
 * Module 3: cli.  Example command line driven tools for processing STIX documents.
