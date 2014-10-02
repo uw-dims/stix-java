@@ -57,9 +57,14 @@ To then try out a bundled command line interface (cli) tool:
 $ cd stix-java/cli
 
 $ ./stix.md5 ../jaxb/src/test/resources/APT1/Appendix_G_IOCs_Full.xml
-```
-which should print a list of 1797 md5 hashes to stdout. The stix.md5
-file is a simple bash script driving the JVM invocation of the
-appropriate class.
+``` 
+
+The tool simply loads the supplied file and extracts any md5 hashes
+found in Indicators and/or Observables.  It should print a list of
+1797 md5 hashes to stdout. The stix.md5 file is a simple bash script
+driving the JVM invocation of the appropriate class.
+
+
+Observation: This whole jaxb lark is way too complicated. Just use grep!
 
 eof
