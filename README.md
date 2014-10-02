@@ -11,9 +11,9 @@ standard for xjc.
 
 To answer the question 'Are these bindings any good?', we try to
 assert Yes by consuming into a Java program a series of sample STIX
-documents.  See the test cases in ./jaxb/src/test/java and the sample
-documents in ./jaxb/src/test/resources. Most samples were obtained from
-https://stix.mitre.org/language/version1.1.1/samples/stix1.1.1-samples-all.zip.
+documents.  See the test cases [here](./jaxb/src/test/java) and the sample
+documents [here](./jaxb/src/test/resources). Most samples were obtained from
+[Mitre](https://stix.mitre.org/language/version1.1.1/samples/stix1.1.1-samples-all.zip).
 
 PRE-REQUISITES
 ==============
