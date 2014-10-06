@@ -10,7 +10,7 @@ locally, essentially to resolve name clashes, we use a .xjb file as
 standard for xjc.
 
 To answer the question 'Are these bindings any good?', we try to
-assert Yes by consuming into a Java program a series of sample STIX
+assert Yes by consuming into a Java program a series of 33 sample STIX
 documents.  See the test cases
 [here](./jaxb/src/test/java/edu/uw/apl/stix/jaxb) and the sample
 documents [here](./jaxb/src/test/resources). Most samples were
