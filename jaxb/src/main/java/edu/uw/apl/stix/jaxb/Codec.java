@@ -34,6 +34,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.UnmarshalException;
 import javax.xml.validation.Schema;
 import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
@@ -49,23 +50,23 @@ import org.mitre.stix.stix_1.STIXType;
 
 public class Codec {
 
-	static public STIXType unmarshal( File stixDocument ) throws Exception {
+	static public STIXType unmarshal( File stixDocument )
+		throws IOException, JAXBException {
 
 		STIXType result = null;
 		Unmarshaller um = jc.createUnmarshaller();
 		um.setEventHandler( new DefaultValidationEventHandler() );
-		FileInputStream fis = new FileInputStream( stixDocument );
+		FileInputStream fis = null;
 		try {
+			fis = new FileInputStream( stixDocument );
 			JAXBElement<STIXType> e = (JAXBElement<STIXType>)um.unmarshal
 				( fis );
 			STIXType t = e.getValue();
-			result = t;
-		} catch( javax.xml.bind.UnmarshalException e ) {
-			System.err.println( e );
-			System.err.println( "Error unmarshaling : " + stixDocument );
+			return result;
+		} finally {
+			if( fis != null )
+				fis.close();
 		}
-		fis.close();
-		return result;
 	}
 
 	// derived this via 'find target/classes|grep package-info|sort'...
