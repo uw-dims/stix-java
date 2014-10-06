@@ -105,7 +105,7 @@ public class Codec {
 
 	static final String CONTEXTPATH =
 		STIX111_CONTEXTPATH + ":" +
-		//	   	MAEC_CONTEXTPATH + ":" +
+		MAEC_CONTEXTPATH + ":" +
 		CYBOX21_CONTEXTPATH;// + ":" +
 		//		CYBOX21_EXTENSIONS_CONTEXTPATH;
 	

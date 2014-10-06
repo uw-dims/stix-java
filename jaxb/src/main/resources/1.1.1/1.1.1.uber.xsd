@@ -69,6 +69,7 @@
   <xs:import namespace="http://stix.mitre.org/extensions/TestMechanism#Snort-1" schemaLocation="extensions/test_mechanism/snort_test_mechanism.xsd"/>
   <xs:import namespace="http://stix.mitre.org/extensions/TestMechanism#YARA-1" schemaLocation="extensions/test_mechanism/yara_test_mechanism.xsd"/>
   <xs:import namespace="http://stix.mitre.org/Incident-1" schemaLocation="incident.xsd"/>
+  <xs:import namespace="http://maec.mitre.org/XMLSchema/maec-container-2" schemaLocation="maec_4.1/maec_container_schema.xsd"/>
   <xs:import namespace="http://stix.mitre.org/stix-1" schemaLocation="stix_core.xsd"/>
   <xs:import namespace="http://stix.mitre.org/default_vocabularies-1" schemaLocation="stix_default_vocabularies.xsd"/>
   <xs:import namespace="http://stix.mitre.org/ThreatActor-1" schemaLocation="threat_actor.xsd"/>
