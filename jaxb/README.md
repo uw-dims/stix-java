@@ -25,6 +25,11 @@ $ jar xvf ../cybox_v2.1.zip
 
 $ rm -r extensions (since stix/extensions has these)
 
+$ cd ..
+
+$ wget http://maec.mitre.org/language/version4.1/maec_4.1.zip
+
+$ jar xvf maec_4.1.zip
 ```
 
 We made no edits to any surviving xsd file.
@@ -53,7 +58,7 @@ The exact derivation of our uber xsd file was then:
 ```
 $ cd stix-java/jaxb/src/main/resources/1.1.1/
 
-$ xsdwalker *.xsd cybox_v2.1/ extensions/ -e extensions/test_mechanism/oval_5.10_test_mechanism.xsd -e extensions/vulnerability/cvrf_1.1_vulnerability.xsd -u 1.1.1
+$ xsdwalker *.xsd cybox_v2.1 maec_4.1 extensions -e extensions/test_mechanism/oval_5.10_test_mechanism.xsd -e extensions/vulnerability -u 1.1.1
 ```
 
 The -e options exclude the specified files/directories from the xsd
@@ -61,9 +66,9 @@ graph to be supplied to xjc. The -u option names the uber file.
 
 Since the STIX xsd schemas do NOT directly reference other efforts,
 e.g. CyBox, MAEC, but STIX documents often (?) include elements from
-these schemas, we copied in by hand the cybox_v2.1 xsd file set into
-our stix xsd file set, rather than trying to work with 'episodic jaxb
-generation'.  TODO: same for maec.
+these schemas, we copied in by hand the cybox_v2.1 and maec_4.1 xsd
+file sets into our stix xsd file set, rather than trying to work with
+'episodic jaxb generation'.
 
 
 xsdwalker
