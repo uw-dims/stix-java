@@ -54,8 +54,6 @@ import org.mitre.stix.stix_1.STIXType;
 public class SamplesTest extends junit.framework.TestCase {
 
 	protected void setUp() {
-		instances = new HashMap<Class,Integer>();
-
 		docs = new ArrayList<File>();
 		File dir = new File( "src/test/resources" );
 		if( dir.isDirectory() ) {
@@ -70,19 +68,38 @@ public class SamplesTest extends junit.framework.TestCase {
 		System.out.println( "Sample Documents: " + docs.size() );
 	}
 	
+
 	public void testCodecLoad() throws Exception {
 		for( File f : docs ) {
-			System.out.println( f );
-			try {
-				STIXType t = Codec.unmarshal( f );
-			} catch( Exception e ) {
-				System.err.println( e + " -> " + f );
-			}
+			testCodecLoad( f );
 		}
 	}
 
-	List<File> docs;
-	Map<Class,Integer> instances;
+	/**
+	 * The 'test' is simply that the document can indeed be unmarshaled
+	 * into a Java object via the JAXB bindings.
+	 *
+	 * Some Mitre sample docs are NOT actually valid STIX packages.
+	 * We have already weeded out the 'Snippet' files, see above in
+	 * setUp(). There remain some sample docs that are still not
+	 * correct STIX packages.  For these, we expect
+	 * ClassCastExceptions, since the outermost element in the sample
+	 * IS some stix-related element, just NOT a STIX package.
+	 * 
+	 */
+	private void testCodecLoad( File f ) throws Exception {
+		System.out.println( f );
+		try {
+			STIXType t = Codec.unmarshal( f );
+		} catch( ClassCastException e ) {
+			System.err.println( e + " -> " + f );
+		} catch( Exception e ) {
+			System.err.println( e + " -> " + f );
+			fail();
+		}
+	}
+
+	private List<File> docs;
 }
 
 // eof
