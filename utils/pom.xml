@@ -5,12 +5,13 @@
   <parent>
     <groupId>edu.uw.apl.commons</groupId>
     <artifactId>stix-parent</artifactId>
-    <!-- Our major version number encodes the Mitre STIX release -->
-    <version>111.0.0</version>
+    <version>111.1.0</version>
   </parent>
 
   <artifactId>stix-utils</artifactId>
+  <version>111.1.0</version>
   <packaging>jar</packaging>
+  <name>STIX Java: Authoring, Extracting Utilities</name>
   
   <dependencies>
     <dependency>
@@ -18,17 +19,9 @@
       <artifactId>stix-jaxb</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
   
   <build>
-    <defaultGoal>compile</defaultGoal>
-
     <plugins>
       <plugin>
 	<groupId>org.apache.maven.plugins</groupId>

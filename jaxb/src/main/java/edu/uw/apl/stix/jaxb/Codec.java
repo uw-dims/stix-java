@@ -28,16 +28,23 @@ package edu.uw.apl.stix.jaxb;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.UnmarshalException;
 import javax.xml.validation.Schema;
 import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
+//import com.sun.xml.internal.bind.marshaller.NamespacePrefixMapper;
+//import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
+
+import org.mitre.stix.stix_1.ObjectFactory;
 import org.mitre.stix.stix_1.STIXType;
 
 /**
@@ -69,6 +76,30 @@ public class Codec {
 		}
 	}
 
+	static public void marshal( STIXType package_, File f )
+		throws IOException, JAXBException {
+		FileOutputStream fos = new FileOutputStream( f );
+		marshal( package_, fos );
+		fos.close();
+	}
+
+	static public void marshal( STIXType package_, OutputStream os )
+		throws IOException, JAXBException {
+		Marshaller m = jc.createMarshaller();
+		m.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+		/*
+		  try {
+			m.setProperty( "com.sun.xml.internal.bind.namespacePrefixMapper",
+						   PREFIXMAPPER );
+		} catch( PropertyException pe ) {
+			// In case another JAXB implementation is used...
+		}
+		*/
+		ObjectFactory of = new ObjectFactory();
+		JAXBElement<STIXType> je = of.createSTIXPackage( package_ );
+		m.marshal( je, os );
+	}
+	
 	// derived this via 'find target/classes|grep package-info|sort'...
 	static final String STIX111_CONTEXTPATH =
 		"org.mitre.data_marking.marking_1:" +
@@ -117,6 +148,24 @@ public class Codec {
 			throw new ExceptionInInitializerError( je );
 		}
 	}
+
+	// This is a tar pit of internal classes and general voodoo...
+	/*
+	static final NamespacePrefixMapper PREFIXMAPPER =
+		new NamespacePrefixMapper() {
+			@Override
+			public String getPreferredPrefix( String namespaceURI,
+											  String suggestion,
+											  boolean requirePrefix ) {
+				namespaceURI = namespaceURI.intern();
+				if( false ) {
+				} else if( namespaceURI == "http://stix.mitre.org/stix-1" ) {
+					return "stix";
+				}
+				return suggestion;
+			}
+		};
+	*/
 }
 
 // eof

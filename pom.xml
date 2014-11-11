@@ -2,20 +2,33 @@
 	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
   <groupId>edu.uw.apl.commons</groupId>
   <artifactId>stix-parent</artifactId>
   <packaging>pom</packaging>
 
   <!-- 
        Our major version number encodes the Mitre STIX release.  We
-       adhere to Semantic Versioning, see http://semver.org
+       try adhere to Semantic Versioning, see http://semver.org, with
+       the caveat that we have 'given up' our major version number to
+       track Mitre's release number, leaving us only minor and patch
+       numbers to work with.
   -->
-  <version>111.0.0</version>
-
-  <name>STIX Java</name>
+  <version>111.1.0</version>
+  
+  <name>STIX Java: Parent Pom</name>
   <description>A Java Binding To Mitre's STIX language</description>
+  <url>http://eis.apl.uw.edu</url>
 
-  <licenses>
+  <organization>
+    <name>Applied Physics Laboratory, University of Washington</name>
+    <url>http://www.apl.uw.edu</url>
+  </organization>
+
+ <licenses>
     <license>
       <name>New BSD license</name>
       <url>http://www.opensource.org/licenses/bsd-license.php</url>
@@ -37,4 +50,85 @@
     <module>cli</module>
   </modules>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+	<groupId>commons-cli</groupId>
+	<artifactId>commons-cli</artifactId>
+	<version>1.2</version>
+      </dependency>
+      <dependency>
+	<groupId>commons-codec</groupId>
+	<artifactId>commons-codec</artifactId>
+	<version>1.9</version>
+      </dependency>
+      <dependency>
+	<groupId>commons-io</groupId>
+	<artifactId>commons-io</artifactId>
+	<version>2.4</version>
+      </dependency>
+      <dependency>
+	<groupId>log4j</groupId>
+	<artifactId>log4j</artifactId>
+	<version>1.2.17</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
+  <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.2</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+
+  <build>
+    <defaultGoal>compile</defaultGoal>
+
+    <pluginManagement>
+      <plugins>
+	<plugin>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-javadoc-plugin</artifactId>
+	  <version>2.10.1</version>
+	</plugin>
+	<plugin>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-compiler-plugin</artifactId>
+	  <version>2.5</version>
+	  <configuration>
+	    <source>1.7</source>
+	    <target>1.7</target>
+	  </configuration>
+	</plugin>
+	<plugin>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-jar-plugin</artifactId>
+	  <version>2.5</version>
+	</plugin>
+	<plugin>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-dependency-plugin</artifactId>
+	  <version>2.9</version>
+	</plugin>
+	<plugin>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-install-plugin</artifactId>
+	  <version>2.5.2</version>
+	  <configuration>
+	    <createChecksum>true</createChecksum>
+	  </configuration>
+	</plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>

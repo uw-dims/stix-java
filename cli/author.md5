@@ -1,11 +1,11 @@
 #!/bin/sh
 
 ARTIFACT=stix-cli
-VERSION=111.0.0
+VERSION=111.1.0
 
 JAR=$ARTIFACT-$VERSION.jar
 
-CLAZZ=edu.uw.apl.stix.cli.MD5Extractor
+CLAZZ=edu.uw.apl.stix.cli.MD5Composer
 
 exec java -cp target/$JAR $CLAZZ "$@"
 
