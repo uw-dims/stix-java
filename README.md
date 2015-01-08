@@ -30,7 +30,7 @@ resolved by Maven. The author uses Maven 2.2.1 on Ubuntu 12.04 LTS.
 INSTALLATION
 ============
 
-Currently this codebase is organised as three Maven 'modules', with a
+Currently this codebase is organised as four Maven 'modules', with a
 parent pom at the root level.
 
 * Module 1: the jaxb bindings.  Java classes auto-generated from .xsd
@@ -44,6 +44,10 @@ Getting the xsd file set to build took some work. See
 * Module 2: utils. Example routines for extracting content from a STIX package.  Eventually, authoring utils would be added too.
 
 * Module 3: cli.  Example command line driven tools for processing STIX documents.
+
+* Module 4: json.  Experimenting whether STIX Java objects can be
+  represented as JSON.  The basic answer is no. See the [./json/src/main](json sources) and [./json/src/test] (json test cases) for more details.
+
 
 To build:
 
