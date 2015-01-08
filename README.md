@@ -46,7 +46,11 @@ Getting the xsd file set to build took some work. See
 * Module 3: cli.  Example command line driven tools for processing STIX documents.
 
 * Module 4: json.  Experimenting whether STIX Java objects can be
-  represented as JSON.  The basic answer is no. See the [json sources](./json/src/main) and (json test cases)[./json/src/test]  for more details.
+  represented as JSON.  The basic answer is no, at least for the
+  complex STIX instance documents cited above. See the [json
+  sources](./json/src/main) and [json test
+  case](./json/src/test/edu/uw/apl/stix/json/SamplesTest.java) for
+  more details.
 
 
 To build:
