@@ -49,7 +49,7 @@ Getting the xsd file set to build took some work. See
   represented as JSON.  The basic answer is no, at least for the
   complex STIX instance documents cited above. See the [json
   sources](./json/src/main) and [json test
-  case](./json/src/test/edu/uw/apl/stix/json/SamplesTest.java) for
+  case](./json/src/test/java/edu/uw/apl/stix/json/SamplesTest.java) for
   more details.
 
 
