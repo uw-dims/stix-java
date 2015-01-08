@@ -60,7 +60,6 @@ public class Codec {
 	static public STIXType unmarshal( File stixDocument )
 		throws IOException, JAXBException {
 
-		STIXType result = null;
 		Unmarshaller um = jc.createUnmarshaller();
 		um.setEventHandler( new DefaultValidationEventHandler() );
 		FileInputStream fis = null;
@@ -68,8 +67,7 @@ public class Codec {
 			fis = new FileInputStream( stixDocument );
 			JAXBElement<STIXType> e = (JAXBElement<STIXType>)um.unmarshal
 				( fis );
-			STIXType t = e.getValue();
-			return result;
+			return e.getValue();
 		} finally {
 			if( fis != null )
 				fis.close();
