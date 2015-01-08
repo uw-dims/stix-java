@@ -24,38 +24,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.uw.apl.stix.jaxb;
+package edu.uw.apl.stix.json;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.validation.Schema;
-import javax.xml.bind.helpers.DefaultValidationEventHandler;
+import org.mitre.stix.stix_1.ObjectFactory;
+import org.mitre.stix.stix_1.STIXType;
+
+import edu.uw.apl.stix.jaxb.Codec;
 
 import org.apache.commons.io.FileUtils;
 
-import org.mitre.stix.stix_1.STIXType;
+import static org.junit.Assert.*;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
- * @author Stuart Maclean.
+ * Test cases for converting STIX package objects to and from JSON
+ * strings.  The STIX package objects are created by loading from
+ * sample STIX documents in our 'sample set', as distributed by Mitre.
  *
- * Test driver for attempting ingest of sample STIX instance documents
+ * {@link https://stix.mitre.org/language/version1.1.1/samples/stix1.1.1-samples-all.zip}
+ *
+ * Note: Given the complexities of the various sample documents, there
+ * is NO guarantee that these objects (which conform to the STIX
+ * schema) can be represented/exchanged in json format.  They can of
+ * course be represented/exchanged in xml form.  This 'json-ification'
+ * of STIX obects was a purely academic exercise, essentially to
+ * convince myself that the json would <em>not</em> work. Laugh!
  */
- 
-public class SamplesTest extends junit.framework.TestCase {
 
-	protected void setUp() {
+public class SamplesTest {
+	
+	@BeforeClass
+	static public void locateSamples() {
 		docs = new ArrayList<File>();
-		File dir = new File( "src/test/resources" );
+		File dir = new File( "../jaxb/src/test/resources" );
 		if( dir.isDirectory() ) {
 			Collection<File> fs = FileUtils.listFiles
 				( dir, new String[] { "xml" }, true );
@@ -67,41 +73,39 @@ public class SamplesTest extends junit.framework.TestCase {
 		}
 		System.out.println( "Sample Documents: " + docs.size() );
 	}
-	
 
-	public void testCodecLoad() throws Exception {
-		for( File f : docs ) {
-			testCodecLoad( f );
+	@Test
+	public void testSamples() {
+		for( File d : docs ) {
+			testSample( d );
+			// Do as many as we need ??
+			break;
 		}
 	}
 
-	/**
-	 * The 'test' is simply that the document can indeed be unmarshaled
-	 * into a Java object via the JAXB bindings.
-	 *
-	 * Some Mitre sample docs are NOT actually valid STIX packages.
-	 * We have already weeded out the 'Snippet' files, see above in
-	 * setUp(). There remain some sample docs that are still not
-	 * correct STIX packages.  For these, we expect
-	 * ClassCastExceptions, since the outermost element in the sample
-	 * IS some stix-related element, just NOT a STIX package.
-	 * 
-	 */
-	private void testCodecLoad( File f ) throws Exception {
+	private void testSample( File f ) {
 		System.out.println( f );
 		try {
+			// Load a STIX document into a Java object
 			STIXType t = Codec.unmarshal( f );
-			File local = new File( f.getName() );
-			Codec.marshal( t, local );
-		} catch( ClassCastException e ) {
-			System.err.println( e + " -> " + f );
+
+			// See how that object looks as xml again, on stdout
+			Codec.marshal( t, System.out );
+			
+			// Convert the object to JSON and see how that looks
+			boolean prettyPrint = true;
+			String s = JSONCodec.toJSON( t, prettyPrint );
+			System.out.println( s );
+
+			// Can we rebuild another object from the JSON? Likely not ;)
+			STIXType t2 = JSONCodec.fromJSON( s );
 		} catch( Exception e ) {
-			System.err.println( e + " -> " + f );
-			fail();
+			System.err.println( e );
 		}
 	}
-
-	private List<File> docs;
+	
+	static private List<File> docs;
 }
 
 // eof
+
