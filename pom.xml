@@ -17,7 +17,7 @@
        track Mitre's release number, leaving us only minor and patch
        numbers to work with.
   -->
-  <version>111.1.0</version>
+  <version>111.2.0</version>
   
   <name>STIX Java: Parent Pom</name>
   <description>A Java Binding To Mitre's STIX language</description>
@@ -48,6 +48,7 @@
     <module>jaxb</module>
     <module>utils</module>
     <module>cli</module>
+    <module>json</module>
   </modules>
 
   <dependencyManagement>
@@ -85,7 +86,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.11</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

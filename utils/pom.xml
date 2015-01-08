@@ -5,11 +5,10 @@
   <parent>
     <groupId>edu.uw.apl.commons</groupId>
     <artifactId>stix-parent</artifactId>
-    <version>111.1.0</version>
+    <version>111.2.0</version>
   </parent>
 
   <artifactId>stix-utils</artifactId>
-  <version>111.1.0</version>
   <packaging>jar</packaging>
   <name>STIX Java: Authoring, Extracting Utilities</name>
   
