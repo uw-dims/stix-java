@@ -43,8 +43,8 @@ Getting the xsd file set to build took some work. See
 
 * Module 2: utils. Example routines for document authoring (writing)
   and document ingesting (reading).  Authoring utilities are at
-  [./utils/src/main/java/edu/uw/apl/stix/utils/HashComposers.java](HashComposers).  Ingest utilities are at
-  [./utils/src/main/java/edu/uw/apl/stix/utils/HashExtractors.java](HashExtractors).
+  [HashComposers](./utils/src/main/java/edu/uw/apl/stix/utils/HashComposers.java).  Ingest utilities are at
+  [HashExtractors](./utils/src/main/java/edu/uw/apl/stix/utils/HashExtractors.java).
 
 * Module 3: cli.  Command line driver tools for invoking the utilities above.
 
