@@ -41,9 +41,12 @@ See under jaxb/src/test/resources.
 Getting the xsd file set to build took some work. See
 [./jaxb/README.md](./jaxb/README.md) for more details.
 
-* Module 2: utils. Example routines for extracting content from a STIX package.  Eventually, authoring utils would be added too.
+* Module 2: utils. Example routines for document authoring (writing)
+  and document ingesting (reading).  Authoring utilities are at
+  [./utils/src/main/java/edu/uw/apl/stix/utils/HashComposers.java](HashComposers).  Ingest utilities are at
+  [./utils/src/main/java/edu/uw/apl/stix/utils/HashExtractors.java](HashExtractors).
 
-* Module 3: cli.  Example command line driven tools for processing STIX documents.
+* Module 3: cli.  Command line driver tools for invoking the utilities above.
 
 * Module 4: json.  Experimenting whether STIX Java objects can be
   represented as JSON.  The basic answer is no, at least for the
