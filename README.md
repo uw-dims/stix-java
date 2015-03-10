@@ -46,7 +46,11 @@ Getting the xsd file set to build took some work. See
   [HashComposers](./utils/src/main/java/edu/uw/apl/stix/utils/HashComposers.java).  Ingest utilities are at
   [HashExtractors](./utils/src/main/java/edu/uw/apl/stix/utils/HashExtractors.java).
 
-* Module 3: cli.  Command line driver tools for invoking the utilities above.
+* Module 3: cli.  Command line driver tools for invoking the utilities
+  above.  For authoring, see
+  [MD5Composer](./cli/src/main/java/edu/uw/apl/stix/cli/MD5Composer.java).
+  For ingesting, see
+  [MD5Extractor](./cli/src/main/java/edu/uw/apl/stix/cli/MD5Extractor.java).
 
 * Module 4: json.  Experimenting whether STIX Java objects can be
   represented as JSON.  The basic answer is no, at least for the
