@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.mitre.stix.stix_1.STIXType;
+import org.mitre.stix.stix_1.STIXPackage;
 
-import edu.uw.apl.stix.jaxb.Codec;
+
 
 public class HashComposersTest extends junit.framework.TestCase {
 
@@ -15,16 +15,16 @@ public class HashComposersTest extends junit.framework.TestCase {
 
 	public void _testEmpty() throws Exception {
 		List<String> empty = Collections.emptyList();
-		STIXType s = HashComposers.composeMD5HashObservables( empty );
-		Codec.marshal( s, System.out );
+		STIXPackage s = HashComposers.composeMD5HashObservables( empty );
+		// Codec.marshal( s, System.out );
 	}
 
 	public void test1() throws Exception {
 		List<String> hashes = new ArrayList<String>();
 		String hash1 = "12345678901234567890123456789012";
 		hashes.add( hash1 );
-		STIXType s = HashComposers.composeMD5HashObservables( hashes );
-		Codec.marshal( s, System.out );
+		STIXPackage s = HashComposers.composeMD5HashObservables( hashes );
+		// Codec.marshal( s, System.out );
 	}
 
 }

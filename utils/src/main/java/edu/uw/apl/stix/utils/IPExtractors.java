@@ -30,34 +30,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.mitre.cybox.common_2.ControlledVocabularyStringType;
-import org.mitre.cybox.common_2.HashListType;
-import org.mitre.cybox.common_2.HashType;
 import org.mitre.cybox.common_2.ObjectPropertiesType;
-import org.mitre.cybox.common_2.SimpleHashValueType;
 import org.mitre.cybox.cybox_2.ObjectType;
 import org.mitre.cybox.cybox_2.Observable;
 import org.mitre.cybox.cybox_2.Observables;
-import org.mitre.cybox.objects.FileObjectType;
+import org.mitre.cybox.objects.Address;
 import org.mitre.stix.stix_1.STIXPackage;
 
 /**
- * @author Stuart Maclean
- *
- * All things concerning hash string extraction from STIX packages.
+ * All things concerning IP extraction from STIX packages.
  *
  * Q: Are these any better than grep?  Probably.  Better than xpath, maybe.
  *
  */
-public class HashExtractors {
+public class IPExtractors {
 
 	/**
 	 * @param stixPackage - a STIX package to scan/parse
 	 *
-	 * @return a list of hexbinary strings containing all the md5 hashes
+	 * @return a list containing all the IPs
 	 * extracted from Observable/FileObjectType in the supplied package
 	 */
-	static public List<String> extractMD5HexBinary( STIXPackage stixPackage ) {
+	static public List<String> extractIPs( STIXPackage stixPackage ) {
 		// All top-level observables, if any
 		Observables ot = stixPackage.getObservables();
 		if( ot == null )
@@ -69,32 +63,11 @@ public class HashExtractors {
 			ObjectType obj = el.getObject();
 			ObjectPropertiesType opt = obj.getProperties();
 			// LOOK: any better way than instanceof, yuk!
-			if( opt instanceof FileObjectType ) {
-				FileObjectType fot = (FileObjectType)opt;
-				result.addAll( extractMD5HexBinary( fot ) );
-			}
-		}
-		return result;
-	}
-
-	static List<String> extractMD5HexBinary( FileObjectType fot ) {
-		HashListType hlt = fot.getHashes();
-		if( hlt == null )
-			return Collections.emptyList();
-		List<HashType> hs = hlt.getHashes();
-		List<String> result = new ArrayList<String>(hs.size());
-		for( HashType h : hs ) {
-			ControlledVocabularyStringType cvst = h.getType();
-			Object cvstv = cvst.getValue();
-			String cvstvS = (String)cvstv;
-			if( cvstvS.equalsIgnoreCase( "MD5" ) ) {
-				SimpleHashValueType shvt = h.getSimpleHashValue();
-				String hash = (String)shvt.getValue();
-				result.add( hash );
+			if( opt instanceof Address ) {
+				Address fot = (Address)opt;
+				result.add((String) fot.getAddressValue().getValue());
 			}
 		}
 		return result;
 	}
 }
-
-// eof

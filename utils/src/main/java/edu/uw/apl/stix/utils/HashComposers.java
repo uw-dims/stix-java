@@ -27,21 +27,18 @@
 package edu.uw.apl.stix.utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.mitre.cybox.cybox_2.ObjectType;
+import org.mitre.cybox.cybox_2.Observable;
+import org.mitre.cybox.cybox_2.Observables;
 import org.mitre.cybox.default_vocabularies_2.HashNameVocab10;
-import org.mitre.cybox.common_2.ControlledVocabularyStringType;
 import org.mitre.cybox.common_2.ObjectPropertiesType;
 import org.mitre.cybox.common_2.HashListType;
 import org.mitre.cybox.common_2.HashType;
 import org.mitre.cybox.common_2.SimpleHashValueType;
-import org.mitre.cybox.common_2.StringObjectPropertyType;
-import org.mitre.cybox.cybox_2.ObservableType;
-import org.mitre.cybox.cybox_2.ObservablesType;
 import org.mitre.cybox.objects.FileObjectType;
-import org.mitre.stix.stix_1.STIXType;
+import org.mitre.stix.stix_1.STIXPackage;
 
 /**
  * @author Stuart Maclean
@@ -83,40 +80,40 @@ public class HashComposers {
 	 * }
 	 * </pre>
 	 */
-	static public STIXType composeMD5HashObservables( List<String> hashes ) {
+	static public STIXPackage composeMD5HashObservables( List<String> hashes ) {
 
 		org.mitre.stix.stix_1.ObjectFactory of =
 			new org.mitre.stix.stix_1.ObjectFactory();
-		STIXType result = of.createSTIXType();
+		STIXPackage result = of.createSTIXPackage();
 		
 		org.mitre.cybox.cybox_2.ObjectFactory of2 =
 			new org.mitre.cybox.cybox_2.ObjectFactory();
-		ObservablesType ot = of2.createObservablesType();
+		Observables ot = of2.createObservables();
 		ot.setCyboxMajorVersion( "2" );
 		ot.setCyboxMinorVersion( "1" );
 		
 		result.setObservables( ot );
 		
-		List<ObservableType> observables = ot.getObservable();
+		List<Observable> observables = ot.getObservables();
 		addMD5HashObservables( hashes, observables );
 		return result;
 	}
 
 	static public void addMD5HashObservables( List<String> hashes,
-											  List<ObservableType> observables) {
+											  List<Observable> observables) {
 		List<FileObjectType> fos = asFileObjectHashes( hashes );
 		for( FileObjectType fo : fos ) {
-			ObservableType obs = inObservable( fo );
+			Observable obs = inObservable( fo );
 			observables.add( obs );
 		}		
 	}
 
-	static ObservableType inObservable( ObjectPropertiesType op ) {
+	static Observable inObservable( ObjectPropertiesType op ) {
 		org.mitre.cybox.cybox_2.ObjectFactory of =
 			new org.mitre.cybox.cybox_2.ObjectFactory();
 		ObjectType obj = of.createObjectType();
 		obj.setProperties( op );
-		ObservableType obs = of.createObservableType();
+		Observable obs = of.createObservable();
 		obs.setObject( obj );
 		return obs;
 		
@@ -149,7 +146,7 @@ public class HashComposers {
 		ht.setType( hnv );
 
 		HashListType hlt = of.createHashListType();
-		List<HashType> hts = hlt.getHash();
+		List<HashType> hts = hlt.getHashes();
 		hts.add( ht );
 		
 		org.mitre.cybox.objects.ObjectFactory of3 =
