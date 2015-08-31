@@ -45,7 +45,10 @@
   </developers>
 
   <modules>
+    <!--
+      Using the MITRE provided library instead
     <module>jaxb</module>
+    -->
     <module>utils</module>
     <module>cli</module>
   </modules>
