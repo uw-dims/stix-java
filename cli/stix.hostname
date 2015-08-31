@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ARTIFACT=stix-cli
-VERSION=111.1.0
+VERSION=111.0.0
 
 JAR=$ARTIFACT-$VERSION.jar
 
 CLAZZ=edu.uw.apl.stix.cli.Runner
 
-exec java -cp target/$JAR $CLAZZ md5 "$@"
+exec java -cp target/$JAR $CLAZZ hostname "$@"
 
 # eof
