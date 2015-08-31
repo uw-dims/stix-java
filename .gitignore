@@ -2,3 +2,7 @@ paste
 *.class
 *~
 target
+
+.project
+.settings
+.classpath
