@@ -1,5 +1,5 @@
 /**
- * Copyright © 2014, University of Washington
+ * Copyright © 2014-2015, University of Washington
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,52 +26,33 @@
  */
 package edu.uw.apl.stix.cli;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 
-import org.apache.commons.cli.Options;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.PosixParser;
-import org.mitre.stix.stix_1.STIXPackage;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-
-import edu.uw.apl.stix.utils.HashComposers;
+import org.apache.commons.cli.PosixParser;
+import org.apache.commons.io.FileUtils;
+import org.mitre.stix.stix_1.STIXPackage;
 
 /**
- * @author Stuart Maclean
- *
- * Usage: MD5Composer hexHash1 hexHash2 ...
- *
- * where each hexHash cmd line arg is first checked to see if it name
- * a file, and if does not, is used literally.
- *
- * We then compose a STIX document with the supplied hashes being
- * entered as subelement of file-based Observables.  The document is composed
- * on stdout, or to a file if the -o option supplied.
+ * Abstract class all the Extractors will follow
  */
-public class MD5Composer {
+public abstract class Extractor {
+	protected File inFile;
 	
-	static public void main( String[] args ) {
-		MD5Composer main = new MD5Composer();
-		try {
-			main.readArgs( args );
-			main.start();
-		} catch( Exception e ) {
-			e.printStackTrace();
-			System.exit(-1);
-		}
-	}
-
-	MD5Composer() {
-		hashes = new ArrayList<String>();
-	}
-	
-	private void readArgs( String[] args ) throws Exception {
+	/**
+	 * Read and parse the command line arguments
+	 * @param args
+	 * @throws Exception
+	 */
+	public void readArgs( String[] args ) throws Exception {
 		Options os = new Options();
 
-		final String USAGE = MD5Composer.class.getName() + " hexHash+";
+		final String USAGE = "inFile";
 		final String HEADER = "";
 		final String FOOTER = "";
 		
@@ -84,30 +65,45 @@ public class MD5Composer {
 			System.exit(1);
 		}
 		args = cl.getArgs();
-		if( args.length > 0 ) {
-			for( String arg : args ) {
-				hashes.add( arg );
+		if( args.length >= 2 ) {
+			inFile = new File( args[1] );
+			if( !inFile.isFile() ) {
+				// like bash would do, write to stderr...
+				System.err.println( inFile + ": No such file or directory" );
+				System.exit(-1);
 			}
 		} else {
 			printUsage( os, USAGE, HEADER, FOOTER );
 			System.exit(1);
 		}
 	}
-
-	static private void printUsage( Options os, String usage,
-									String header, String footer ) {
+	
+	/**
+	 * Get the STIXPackage from parsing the XML input file
+	 * @return
+	 * @throws IOException
+	 */
+	protected STIXPackage getStixPackage() throws IOException{
+		String text = FileUtils.readFileToString(inFile);
+		return STIXPackage.fromXMLString(text);
+	}
+	
+	/**
+	 * Start extracting the data
+	 * @throws Exception
+	 */
+	public abstract void start() throws Exception;
+	
+	/**
+	 * Print the usage of the class to the console
+	 * @param os
+	 * @param usage
+	 * @param header
+	 * @param footer
+	 */
+	static protected void printUsage(Options os, String usage, String header, String footer) {
 		HelpFormatter hf = new HelpFormatter();
-		hf.setWidth( 80 );
-		hf.printHelp( usage, header, os, footer );
+		hf.setWidth(80);
+		hf.printHelp(usage, header, os, footer);
 	}
-
-	private void start() throws Exception {
-		STIXPackage s = HashComposers.composeMD5HashObservables( hashes );
-		s.toXMLString(true);
-		// Codec.marshal( s, System.out );
-	}
-
-	private List<String> hashes;
 }
-
-// eof

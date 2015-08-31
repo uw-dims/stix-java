@@ -26,30 +26,49 @@
  */
 package edu.uw.apl.stix.cli;
 
-import java.util.List;
-
-import org.mitre.stix.stix_1.STIXPackage;
-
-import edu.uw.apl.stix.utils.HashExtractors;
-
 /**
- * @author Stuart Maclean
- *
- * Usage: MD5Extractor stixFile
- *
- * Extract from a STIX file all md5 hashes.  These are likely subelements
- * of FileTypeObjects, themselves subelements of Observable and/or Indicator.
- *
- * Print the resulting hexbinary strings to stdout, one line at a time.
+ * Class which decides which Extractor class to use
  */
-public class MD5Extractor extends Extractor {
+public class Runner {
 
-	public void start() throws Exception {
-		STIXPackage stixPackage = getStixPackage();
-		//		System.out.println( package_ );
-		List<String> md5s = HashExtractors.extractMD5HexBinary( stixPackage );
-		for( String md5 : md5s )
-			System.out.println( md5 );
+	/**
+	 * Program entry point
+	 * @param args
+	 */
+	public static void main(String[] args){
+		if(args.length == 0){
+			System.err.println("Missing type and fiel to extract");
+			System.exit(-1);
+		}
+		
+		// Get the correct extractor
+		Extractor extractor = null;
+		switch(args[0].toLowerCase()){
+		case "md5":
+			extractor = new MD5Extractor();
+			break;
+		case "ip":
+			extractor = new IPExtractor();
+			break;
+		case "hostname":
+			extractor = new HostnameExtractor();
+			break;
+		}
+		
+		// Make sure that the extractor is set
+		if(extractor == null){
+			System.err.println("Unknown type: "+args[0]);
+			System.exit(-1);
+		}
+		
+		// Run the extractor
+		try{
+			extractor.readArgs(args);
+			extractor.start();
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		
 	}
-	
 }

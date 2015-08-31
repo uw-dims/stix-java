@@ -30,26 +30,27 @@ import java.util.List;
 
 import org.mitre.stix.stix_1.STIXPackage;
 
-import edu.uw.apl.stix.utils.HashExtractors;
+import edu.uw.apl.stix.utils.IPExtractors;
 
 /**
  * @author Stuart Maclean
  *
- * Usage: MD5Extractor stixFile
+ * Usage: IPExtractor stixFile
  *
- * Extract from a STIX file all md5 hashes.  These are likely subelements
+ * Extract from a STIX file all IP addresses.  These are likely subelements
  * of FileTypeObjects, themselves subelements of Observable and/or Indicator.
  *
- * Print the resulting hexbinary strings to stdout, one line at a time.
+ * Print the resulting IPs to stdout, one line at a time.
  */
-public class MD5Extractor extends Extractor {
+public class IPExtractor extends Extractor {
 
+	@Override
 	public void start() throws Exception {
 		STIXPackage stixPackage = getStixPackage();
 		//		System.out.println( package_ );
-		List<String> md5s = HashExtractors.extractMD5HexBinary( stixPackage );
-		for( String md5 : md5s )
-			System.out.println( md5 );
+		List<String> hostnames = IPExtractors.extractIPs(stixPackage);
+		for( String hostname : hostnames )
+			System.out.println( hostname );
 	}
-	
+
 }
