@@ -37,12 +37,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.UnmarshalException;
-import javax.xml.validation.Schema;
 import javax.xml.bind.helpers.DefaultValidationEventHandler;
-
-//import com.sun.xml.internal.bind.marshaller.NamespacePrefixMapper;
-//import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
 import org.mitre.stix.stix_1.ObjectFactory;
 import org.mitre.stix.stix_1.STIXType;
@@ -66,6 +61,7 @@ public class Codec {
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream( stixDocument );
+			@SuppressWarnings("unchecked")
 			JAXBElement<STIXType> e = (JAXBElement<STIXType>)um.unmarshal
 				( fis );
 			STIXType t = e.getValue();

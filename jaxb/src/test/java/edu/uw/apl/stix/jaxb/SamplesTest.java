@@ -27,30 +27,21 @@
 package edu.uw.apl.stix.jaxb;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.validation.Schema;
-import javax.xml.bind.helpers.DefaultValidationEventHandler;
-
 import org.apache.commons.io.FileUtils;
-
-import org.mitre.stix.stix_1.STIXType;
 
 /**
  * @author Stuart Maclean.
  *
  * Test driver for attempting ingest of sample STIX instance documents
  */
- 
+
+@SuppressWarnings("rawtypes")
 public class SamplesTest extends junit.framework.TestCase {
 
 	protected void setUp() {
@@ -90,7 +81,7 @@ public class SamplesTest extends junit.framework.TestCase {
 	private void testCodecLoad( File f ) throws Exception {
 		System.out.println( f );
 		try {
-			STIXType t = Codec.unmarshal( f );
+			Codec.unmarshal( f );
 		} catch( ClassCastException e ) {
 			System.err.println( e + " -> " + f );
 		} catch( Exception e ) {
