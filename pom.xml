@@ -17,9 +17,8 @@
        track Mitre's release number, leaving us only minor and patch
        numbers to work with.
   -->
-  <version>111.1.0</version>
-  
   <name>STIX Java: Parent Pom</name>
+  <version>120.0.0</version>
   <description>A Java Binding To Mitre's STIX language</description>
   <url>http://eis.apl.uw.edu</url>
 
