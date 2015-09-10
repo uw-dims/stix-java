@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>stix-cli</artifactId>
-  <version>111.1.0</version>
+  <version>120.0.0</version>
   <packaging>jar</packaging>
   <name>STIX Java: Sample Command Line Programs</name>
 
