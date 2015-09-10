@@ -9,10 +9,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -46,6 +44,7 @@ public class XPathTest extends junit.framework.TestCase {
 					// Not needed in this context.
 					return null;
 				}
+				@SuppressWarnings("rawtypes")
 				public Iterator getPrefixes(String namespaceURI) {
 					// Not needed in this context.
 					return null;

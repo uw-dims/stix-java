@@ -103,7 +103,7 @@ public class MD5Composer {
 
 	private void start() throws Exception {
 		STIXPackage s = HashComposers.composeMD5HashObservables( hashes );
-		s.toXMLString(true);
+		System.out.println(s.toXMLString(true));
 		// Codec.marshal( s, System.out );
 	}
 

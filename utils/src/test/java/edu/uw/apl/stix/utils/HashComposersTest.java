@@ -16,7 +16,7 @@ public class HashComposersTest extends junit.framework.TestCase {
 	public void _testEmpty() throws Exception {
 		List<String> empty = Collections.emptyList();
 		STIXPackage s = HashComposers.composeMD5HashObservables( empty );
-		// Codec.marshal( s, System.out );
+		System.out.println(s.toXMLString(true));
 	}
 
 	public void test1() throws Exception {
@@ -24,7 +24,7 @@ public class HashComposersTest extends junit.framework.TestCase {
 		String hash1 = "12345678901234567890123456789012";
 		hashes.add( hash1 );
 		STIXPackage s = HashComposers.composeMD5HashObservables( hashes );
-		// Codec.marshal( s, System.out );
+		System.out.println(s.toXMLString(true));
 	}
 
 }
