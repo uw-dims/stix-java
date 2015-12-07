@@ -26,8 +26,7 @@
  */
 package edu.uw.apl.stix.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.mitre.cybox.common_2.ObjectPropertiesType;
@@ -35,6 +34,9 @@ import org.mitre.cybox.cybox_2.ObjectType;
 import org.mitre.cybox.cybox_2.Observable;
 import org.mitre.cybox.cybox_2.Observables;
 import org.mitre.cybox.objects.Address;
+import org.mitre.stix.common_1.IndicatorBaseType;
+import org.mitre.stix.indicator_2.Indicator;
+import org.mitre.stix.stix_1.IndicatorsType;
 import org.mitre.stix.stix_1.STIXPackage;
 
 /**
@@ -52,22 +54,52 @@ public class IPExtractors {
 	 * extracted from Observable/FileObjectType in the supplied package
 	 */
 	static public List<String> extractIPs( STIXPackage stixPackage ) {
+	    List<String> result = new LinkedList<String>();
+
+	    // All top-level indicators, if any
+	    IndicatorsType indicators = stixPackage.getIndicators();
+        if (indicators != null) {
+            for (IndicatorBaseType indicator : indicators.getIndicators()) {
+                try {
+                    Indicator ind = (Indicator) indicator;
+                    Observable observable = ind.getObservable();
+
+                    if (observable != null) {
+                        String ip = getIpFromObservable(observable);
+                        if (ip != null) {
+                            result.add(ip);
+                        }
+                    }
+                } catch (Exception e) {
+                    // Ignore. Probably a null pointer exception
+                }
+            }
+        }
+
 		// All top-level observables, if any
 		Observables ot = stixPackage.getObservables();
-		if( ot == null )
-			return Collections.emptyList();
-		List<String> result = new ArrayList<String>();
-		
+		if( ot == null ){
+			return result;
+		}
+
 		List<Observable> ots = ot.getObservables();
 		for( Observable el : ots ) {
-			ObjectType obj = el.getObject();
-			ObjectPropertiesType opt = obj.getProperties();
-			// LOOK: any better way than instanceof, yuk!
-			if( opt instanceof Address ) {
-				Address fot = (Address)opt;
-				result.add((String) fot.getAddressValue().getValue());
+			String ip = getIpFromObservable(el);
+			if(ip != null){
+			    result.add(ip);
 			}
 		}
 		return result;
+	}
+
+	private static String getIpFromObservable(Observable observable){
+	    ObjectType obj = observable.getObject();
+        ObjectPropertiesType opt = obj.getProperties();
+        // LOOK: any better way than instanceof, yuk!
+        if( opt instanceof Address ) {
+            Address fot = (Address)opt;
+            return (String) fot.getAddressValue().getValue();
+        }
+        return null;
 	}
 }

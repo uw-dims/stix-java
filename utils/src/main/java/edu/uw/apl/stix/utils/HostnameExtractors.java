@@ -26,8 +26,7 @@
  */
 package edu.uw.apl.stix.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.mitre.cybox.common_2.ObjectPropertiesType;
@@ -35,6 +34,9 @@ import org.mitre.cybox.cybox_2.ObjectType;
 import org.mitre.cybox.cybox_2.Observable;
 import org.mitre.cybox.cybox_2.Observables;
 import org.mitre.cybox.objects.DomainName;
+import org.mitre.stix.common_1.IndicatorBaseType;
+import org.mitre.stix.indicator_2.Indicator;
+import org.mitre.stix.stix_1.IndicatorsType;
 import org.mitre.stix.stix_1.STIXPackage;
 
 /**
@@ -52,22 +54,51 @@ public class HostnameExtractors {
 	 * extracted from Observable/FileObjectType in the supplied package
 	 */
 	static public List<String> extractHostnames( STIXPackage stixPackage ) {
+	    List<String> result = new LinkedList<String>();
+
+	    // All top-level indicators, if any
+	    IndicatorsType indicators = stixPackage.getIndicators();
+        if (indicators != null) {
+            for (IndicatorBaseType indicator : indicators.getIndicators()) {
+                try {
+                    Indicator ind = (Indicator) indicator;
+                    Observable observable = ind.getObservable();
+                    if (observable != null) {
+                        String hostname = getHostnameFromObservable(observable);
+                        if (hostname != null) {
+                            result.add(hostname);
+                        }
+                    }
+                } catch (Exception e) {
+                    // Ignore. Probably a null pointer exception
+                }
+            }
+        }
+
 		// All top-level observables, if any
 		Observables ot = stixPackage.getObservables();
-		if( ot == null )
-			return Collections.emptyList();
-		List<String> result = new ArrayList<String>();
+		if( ot == null ){
+			return result;
+		}
 		
 		List<Observable> ots = ot.getObservables();
 		for( Observable el : ots ) {
-			ObjectType obj = el.getObject();
-			ObjectPropertiesType opt = obj.getProperties();
-			// LOOK: any better way than instanceof, yuk!
-			if( opt instanceof DomainName ) {
-				DomainName fot = (DomainName)opt;
-				result.add((String) fot.getValue().getValue());
-			}
+		    String hostname = getHostnameFromObservable(el);
+		    if(hostname != null){
+		        result.add(hostname);
+		    }
 		}
 		return result;
+	}
+
+	private static String getHostnameFromObservable(Observable observable){
+        ObjectType obj = observable.getObject();
+        ObjectPropertiesType opt = obj.getProperties();
+        // LOOK: any better way than instanceof, yuk!
+        if( opt instanceof DomainName ) {
+            DomainName fot = (DomainName)opt;
+            return (String) fot.getValue().getValue();
+        }
+        return null;
 	}
 }
