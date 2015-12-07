@@ -27,7 +27,18 @@
 package edu.uw.apl.stix.cli;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.PrintStream;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -37,6 +48,12 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.FileUtils;
 import org.mitre.stix.stix_1.STIXPackage;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Abstract class all the Extractors will follow
@@ -81,11 +98,80 @@ public abstract class Extractor {
 	/**
 	 * Get the STIXPackage from parsing the XML input file
 	 * @return
-	 * @throws IOException
+	 * @throws Exception
 	 */
-	protected STIXPackage getStixPackage() throws IOException{
-		String text = FileUtils.readFileToString(inFile);
-		return STIXPackage.fromXMLString(text);
+	protected List<STIXPackage> getStixPackages() throws Exception {
+	    List<STIXPackage> packages = new ArrayList<STIXPackage>();
+
+	    // Parse the XML
+	    // http://www.mkyong.com/java/how-to-read-xml-file-in-java-dom-parser/
+	    DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+	    DocumentBuilder builder = builderFactory.newDocumentBuilder();
+	    Document doc = builder.parse(inFile);
+
+	    // Maybe this isn't needed?
+	    // See http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+	    doc.getDocumentElement().normalize();
+
+	    /*
+	     *  Redirect stdout to stderr for this method
+	     *  The STIX java library prints lots of warnings to stdout,
+	     *  which pollute our output.
+	     *  Redirect everything to stderr during processing
+	     */
+	    final PrintStream originalOut = System.out;
+	    System.setOut(System.err);
+
+	    // Check if the input file is a collection of STIX documents, or just a single one
+	    if("CISCP:STIX_Packages".equalsIgnoreCase(doc.getDocumentElement().getNodeName())){
+	        /*
+	         *  Pull the attributes out.
+	         *  We will add the attributes from the root to the beginning of the STIX
+	         *  sub-documents, so that they are valid XML on their own
+	         */
+	        NamedNodeMap attributes = doc.getDocumentElement().getAttributes();
+
+	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+
+	        NodeList children = doc.getDocumentElement().getChildNodes();
+	        for(int i=0; i < children.getLength(); i++){
+	            Node node = children.item(i);
+	            // Make sure we only deal with full elements under the root
+	            if(node.getNodeType() != Node.ELEMENT_NODE){
+	                continue;
+	            }
+
+	            Element element = (Element) node;
+
+	            // Add the root's attributes to this element
+	            // This makes sure that namespaces and such are always defined
+	            for(int j =0; j < attributes.getLength(); j++){
+	                Attr attribute = (Attr) attributes.item(j);
+	                element.setAttribute(attribute.getName(), attribute.getValue());
+	            }
+
+	            // Prepare to output the element as a full XML string
+	            StringWriter stringWriter = new StringWriter();
+	            Transformer transformer = transformerFactory.newTransformer();
+	            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+	            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+	            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+	            transformer.transform(new DOMSource(element), new StreamResult(stringWriter));
+
+	            // Take the XML string, and let the STIX library parse it
+	            String xmlString = stringWriter.toString();
+	            STIXPackage stixPackage = STIXPackage.fromXMLString(xmlString);
+	            packages.add(stixPackage);
+	        }
+	    } else {
+	        // We should be dealing with a single STIX document as the root
+	        String text = FileUtils.readFileToString(inFile);
+	        packages.add(STIXPackage.fromXMLString(text));
+	    }
+
+	    // Set stdout back to its original value
+	    System.setOut(originalOut);
+	    return packages;
 	}
 	
 	/**

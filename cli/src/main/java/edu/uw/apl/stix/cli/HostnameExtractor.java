@@ -26,6 +26,7 @@
  */
 package edu.uw.apl.stix.cli;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.mitre.stix.stix_1.STIXPackage;
@@ -46,9 +47,12 @@ public class HostnameExtractor extends Extractor {
 
 	@Override
 	public void start() throws Exception {
-		STIXPackage stixPackage = getStixPackage();
-		//		System.out.println( package_ );
-		List<String> hostnames = HostnameExtractors.extractHostnames(stixPackage);
+		List<STIXPackage> stixPackages = getStixPackages();
+
+		List<String> hostnames = new LinkedList<String>();
+		for(STIXPackage stixPackage : stixPackages){
+		    hostnames.addAll(HostnameExtractors.extractHostnames(stixPackage));
+		}
 		for( String hostname : hostnames )
 			System.out.println( hostname );
 	}

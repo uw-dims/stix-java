@@ -26,6 +26,7 @@
  */
 package edu.uw.apl.stix.cli;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.mitre.stix.stix_1.STIXPackage;
@@ -45,9 +46,12 @@ import edu.uw.apl.stix.utils.HashExtractors;
 public class MD5Extractor extends Extractor {
 
 	public void start() throws Exception {
-		STIXPackage stixPackage = getStixPackage();
-		//		System.out.println( package_ );
-		List<String> md5s = HashExtractors.extractMD5HexBinary( stixPackage );
+		List<STIXPackage> stixPackages = getStixPackages();
+		List<String> md5s = new LinkedList<String>();
+		for(STIXPackage stixPackage : stixPackages){
+		    md5s.addAll(HashExtractors.extractMD5HexBinary( stixPackage ));
+		}
+
 		for( String md5 : md5s )
 			System.out.println( md5 );
 	}
