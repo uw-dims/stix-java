@@ -34,9 +34,11 @@ import org.mitre.cybox.cybox_2.Observable;
 import org.mitre.cybox.cybox_2.Observables;
 import org.mitre.cybox.default_vocabularies_2.HashNameVocab10;
 import org.mitre.cybox.common_2.ObjectPropertiesType;
+import org.mitre.cybox.common_2.ConditionTypeEnum;
 import org.mitre.cybox.common_2.HashListType;
 import org.mitre.cybox.common_2.HashType;
 import org.mitre.cybox.common_2.SimpleHashValueType;
+import org.mitre.cybox.common_2.StringObjectPropertyType;
 import org.mitre.cybox.objects.FileObjectType;
 import org.mitre.stix.stix_1.STIXPackage;
 
@@ -80,7 +82,7 @@ public class HashComposers {
 	 * }
 	 * </pre>
 	 */
-	static public STIXPackage composeMD5HashObservables( List<String> hashes ) {
+	static public STIXPackage composeMD5HashObservables(List<String> fileNames, List<String> hashes) {
 
 		org.mitre.stix.stix_1.ObjectFactory of =
 			new org.mitre.stix.stix_1.ObjectFactory();
@@ -95,13 +97,13 @@ public class HashComposers {
 		result.setObservables( ot );
 		
 		List<Observable> observables = ot.getObservables();
-		addMD5HashObservables( hashes, observables );
+		addMD5HashObservables(fileNames, hashes, observables );
 		return result;
 	}
 
-	static public void addMD5HashObservables( List<String> hashes,
+	static public void addMD5HashObservables( List<String> fileNames, List<String> hashes,
 											  List<Observable> observables) {
-		List<FileObjectType> fos = asFileObjectHashes( hashes );
+		List<FileObjectType> fos = asFileObjectHashes(fileNames, hashes);
 		for( FileObjectType fo : fos ) {
 			Observable obs = inObservable( fo );
 			observables.add( obs );
@@ -120,17 +122,18 @@ public class HashComposers {
 	}	
 		
 		
-	static public List<FileObjectType> asFileObjectHashes
-		( List<String> hashes ) {
+	static public List<FileObjectType> asFileObjectHashes(List<String> fileNames, List<String> hashes ) {
 		List<FileObjectType> result = new ArrayList<FileObjectType>();
-		for( String hash : hashes ) {
-			FileObjectType fo = asFileObjectHash( hash, "md5" );
+		for(int i =0; i < hashes.size(); i++){
+		    String hash = hashes.get(i);
+		    String fileName = fileNames.get(i);
+			FileObjectType fo = asFileObjectHash(fileName, hash, "MD5");
 			result.add( fo );
 		}
 		return result;
 	}
 
-	static public FileObjectType asFileObjectHash( String hash,
+	static public FileObjectType asFileObjectHash(String fileName, String hash,
 												   String algorithm ) {
 		org.mitre.cybox.common_2.ObjectFactory of =
 			new org.mitre.cybox.common_2.ObjectFactory();
@@ -152,6 +155,15 @@ public class HashComposers {
 		org.mitre.cybox.objects.ObjectFactory of3 =
 			new org.mitre.cybox.objects.ObjectFactory();
 		FileObjectType result = of3.createFileObjectType();
+
+		// Only add the file name if it exists
+        if (fileName != null && !"".equals(fileName.trim())) {
+            StringObjectPropertyType fileNameProperty = new StringObjectPropertyType();
+            fileNameProperty.setValue(fileName.trim());
+            fileNameProperty.setCondition(ConditionTypeEnum.EQUALS);
+            result.setFileName(fileNameProperty);
+        }
+
 		result.setHashes( hlt );
 		return result;
 	}

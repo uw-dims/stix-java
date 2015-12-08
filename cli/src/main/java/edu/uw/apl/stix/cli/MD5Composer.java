@@ -52,6 +52,7 @@ import edu.uw.apl.stix.utils.HashComposers;
  * on stdout, or to a file if the -o option supplied.
  */
 public class MD5Composer {
+    private List<String> params;
 	
 	static public void main( String[] args ) {
 		MD5Composer main = new MD5Composer();
@@ -65,14 +66,17 @@ public class MD5Composer {
 	}
 
 	MD5Composer() {
-		hashes = new ArrayList<String>();
+		params = new ArrayList<String>();
 	}
 	
 	private void readArgs( String[] args ) throws Exception {
 		Options os = new Options();
 
-		final String USAGE = MD5Composer.class.getName() + " hexHash+";
-		final String HEADER = "";
+		final String USAGE = MD5Composer.class.getName() + " (\"hexHash,fileName\" | hexhash)+";
+		final String HEADER = "\nThe arguments are a list of hash and file name pairs and/or just hashes. "
+                + "Hash and file name pairs should be quoted, and use a comma to sepereate the hash "
+                + "from the file name.\n"
+                + "If there is no file name, just supply the hash.";
 		final String FOOTER = "";
 		
 		CommandLineParser clp = new PosixParser();
@@ -86,7 +90,7 @@ public class MD5Composer {
 		args = cl.getArgs();
 		if( args.length > 0 ) {
 			for( String arg : args ) {
-				hashes.add( arg );
+				params.add( arg );
 			}
 		} else {
 			printUsage( os, USAGE, HEADER, FOOTER );
@@ -102,12 +106,24 @@ public class MD5Composer {
 	}
 
 	private void start() throws Exception {
-		STIXPackage s = HashComposers.composeMD5HashObservables( hashes );
+	    List<String> hashes = new ArrayList<>(params.size());
+	    List<String> fileNames = new ArrayList<>(params.size());
+	    for(String param : params){
+	        int commaIndex = param.indexOf(",");
+	        String hash = null;
+	        String fileName = null;
+            if (commaIndex < 0) {
+                hash = param;
+            } else {
+                hash = param.substring(0, commaIndex);
+                fileName = param.substring(commaIndex + 1);
+            }
+            hashes.add(hash);
+            fileNames.add(fileName);
+	    }
+
+		STIXPackage s = HashComposers.composeMD5HashObservables(fileNames, hashes);
 		System.out.println(s.toXMLString(true));
 		// Codec.marshal( s, System.out );
 	}
-
-	private List<String> hashes;
 }
-
-// eof
