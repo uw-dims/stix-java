@@ -100,7 +100,7 @@ public abstract class Extractor {
 	 * @return
 	 * @throws Exception
 	 */
-	protected List<STIXPackage> getStixPackages() throws Exception {
+	public static List<STIXPackage> getStixPackages(File inFile) throws Exception {
 	    List<STIXPackage> packages = new ArrayList<STIXPackage>();
 
 	    // Parse the XML

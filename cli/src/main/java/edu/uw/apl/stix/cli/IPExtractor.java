@@ -47,7 +47,7 @@ public class IPExtractor extends Extractor {
 
 	@Override
 	public void start() throws Exception {
-		List<STIXPackage> stixPackages = getStixPackages();
+		List<STIXPackage> stixPackages = getStixPackages(inFile);
 
 		List<String> hostnames = new LinkedList<String>();
 		for(STIXPackage stixPackage : stixPackages){

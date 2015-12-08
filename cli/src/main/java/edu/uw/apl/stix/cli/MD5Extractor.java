@@ -46,7 +46,7 @@ import edu.uw.apl.stix.utils.HashExtractors;
 public class MD5Extractor extends Extractor {
 
 	public void start() throws Exception {
-		List<STIXPackage> stixPackages = getStixPackages();
+		List<STIXPackage> stixPackages = getStixPackages(inFile);
 		List<String> md5s = new LinkedList<String>();
 		for(STIXPackage stixPackage : stixPackages){
 		    md5s.addAll(HashExtractors.extractMD5HexBinary( stixPackage ));
