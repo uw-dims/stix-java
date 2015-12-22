@@ -6,7 +6,7 @@ INSTALL_PATH="/opt/dims"
 # Check if the script was run from under the install path
 if [[ "$DIRNAME" =~ "$INSTALL_PATH" ]]; then
    # The dims jars will be installed under $INSTALL_PATH/jars
-   DIRNAME="$INSTALL_PATH/jars/"
+   DIRNAME="$INSTALL_PATH/jars/stix"
 else
    # Running in the maven project directory. The jar is in the target/ directory
    DIRNAME=$DIRNAME/target
