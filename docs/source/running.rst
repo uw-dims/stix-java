@@ -108,3 +108,73 @@ Example:
 ..
 
 
+*************************
+Creating a STIX Document
+*************************
+
+The STIX Java tool only supports creating a STIX document with file name and MD5 hash indicators.
+
+To create a document, use the ``stix.author.md5`` command and provide a list of MD5 hashes and file name pairs.
+The tool will print the resulting STIX XML to STDOUT.
+
+The format for a hash and file name pair is ``"MD5,/path/to/file"`` including quotes. Don't forget the comma between the
+hash and file path - that's how the tool separates the two. If you do not have a file name/path, just provide the hash.
+
+Example:
+
+.. code-block:: none
+
+    $ stix.author.md5 "026871ea3d6cbbeb90fea6bf2906cc12,/some/file" "02ac495eb31a2405fce287565b590a1f,/some/other/file" 0678645e45fcd3da84ab27122d6775a9
+    <?xml version="1.0" encoding="UTF-8"?>
+    <stix:STIX_Package xmlns="http://xml/metadataSharing.xsd"
+        xmlns:FileObj="http://cybox.mitre.org/objects#FileObject-2"
+        xmlns:cybox="http://cybox.mitre.org/cybox-2"
+        xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
+        xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:stix="http://stix.mitre.org/stix-1">
+        <stix:Observables cybox_major_version="2" cybox_minor_version="1">
+            <cybox:Observable>
+                <cybox:Object>
+                    <cybox:Properties
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="FileObj:FileObjectType">
+                        <FileObj:File_Name condition="Equals">/some/file</FileObj:File_Name>
+                        <FileObj:Hashes>
+                            <cyboxCommon:Hash>
+                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                                <cyboxCommon:Simple_Hash_Value>026871ea3d6cbbeb90fea6bf2906cc12</cyboxCommon:Simple_Hash_Value>
+                            </cyboxCommon:Hash>
+                        </FileObj:Hashes>
+                    </cybox:Properties>
+                </cybox:Object>
+            </cybox:Observable>
+            <cybox:Observable>
+                <cybox:Object>
+                    <cybox:Properties
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="FileObj:FileObjectType">
+                        <FileObj:File_Name condition="Equals">/some/other/file</FileObj:File_Name>
+                        <FileObj:Hashes>
+                            <cyboxCommon:Hash>
+                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                                <cyboxCommon:Simple_Hash_Value>02ac495eb31a2405fce287565b590a1f</cyboxCommon:Simple_Hash_Value>
+                            </cyboxCommon:Hash>
+                        </FileObj:Hashes>
+                    </cybox:Properties>
+                </cybox:Object>
+            </cybox:Observable>
+            <cybox:Observable>
+                <cybox:Object>
+                    <cybox:Properties
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="FileObj:FileObjectType">
+                        <FileObj:Hashes>
+                            <cyboxCommon:Hash>
+                                <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                                <cyboxCommon:Simple_Hash_Value>0678645e45fcd3da84ab27122d6775a9</cyboxCommon:Simple_Hash_Value>
+                            </cyboxCommon:Hash>
+                        </FileObj:Hashes>
+                    </cybox:Properties>
+                </cybox:Object>
+            </cybox:Observable>
+        </stix:Observables>
+    </stix:STIX_Package>
+    $
+
+..
