@@ -61,6 +61,8 @@ Dependencies
 
 STIX Java dependencies are all available via Maven central and will be fetched automatically.
 
+.. _install:
+
 *********************
 Building & Installing
 *********************

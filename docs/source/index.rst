@@ -8,6 +8,7 @@ Contents:
    :maxdepth: 2
 
    building
+   running
    maven
    referenceddocs
 
