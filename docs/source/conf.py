@@ -203,7 +203,7 @@ html_static_path = ['_static']
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Tupelodoc'
+htmlhelp_basename = 'StixJavadoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -233,7 +233,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'Tupelo.tex', u'Tupelo Documentation',
+  ('index', 'StixJava.tex', u'STIX Java Documentation',
    u'Stuart Maclean', 'manual'),
 ]
 

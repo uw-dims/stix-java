@@ -21,9 +21,9 @@ Indices and tables
 * :ref:`search`
 
 
-===================
+*************
 Versioning
-===================
+*************
 
 The STIX Java versioning is based on the supported STIX version.
 
