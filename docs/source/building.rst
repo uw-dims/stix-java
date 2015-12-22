@@ -76,8 +76,8 @@ You can compile and package up all the Java code into what Maven calls
 ..
 
 Alternatively, you can which uses the local ``Makefile`` to invoke Maven, then
-take the jars and copy them to ``/opt/dims/jars``, and copy driver shell
-scripts from ``./bin`` to ``/opt/dims/bin``, as follows:
+take the jars from ``cli/target`` and copy them to ``/opt/dims/jars/stix``, and copy driver shell
+scripts from ``cli/stix.*`` to ``/opt/dims/bin``, as follows:
 
 .. code-block:: none
 
@@ -86,7 +86,6 @@ scripts from ``./bin`` to ``/opt/dims/bin``, as follows:
 
 ..
 
-.. _native-code:
 
 **********
 Unit tests
