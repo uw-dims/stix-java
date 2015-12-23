@@ -115,7 +115,8 @@ Creating a STIX Document
 The STIX Java tool only supports creating a STIX document with file name and MD5 hash indicators.
 
 To create a document, use the ``stix.author.md5`` command and provide a list of MD5 hashes and file name pairs.
-The tool will print the resulting STIX XML to STDOUT.
+
+By default, the tool will print the resulting STIX XML to STDOUT. Use the `-o` option to specify a file for the output.
 
 The format for a hash and file name pair is ``"MD5,/path/to/file"`` including quotes. Don't forget the comma between the
 hash and file path - that's how the tool separates the two. If you do not have a file name/path, just provide the hash.
