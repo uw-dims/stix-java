@@ -26,6 +26,9 @@
  */
 package edu.uw.apl.stix.cli;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +56,7 @@ import edu.uw.apl.stix.utils.HashComposers;
  */
 public class MD5Composer {
     private List<String> params;
+    private File outputFile;
 	
 	static public void main( String[] args ) {
 		MD5Composer main = new MD5Composer();
@@ -70,7 +74,9 @@ public class MD5Composer {
 	}
 	
 	private void readArgs( String[] args ) throws Exception {
-		Options os = new Options();
+		Options options = new Options();
+		options.addOption("o", true, "Output file");
+		// os.addOption("i", true, "Input file");
 
 		final String USAGE = MD5Composer.class.getName() + " (\"hexHash,fileName\" | hexhash)+";
 		final String HEADER = "\nThe arguments are a list of hash and file name pairs and/or just hashes. "
@@ -79,21 +85,27 @@ public class MD5Composer {
                 + "If there is no file name, just supply the hash.";
 		final String FOOTER = "";
 		
-		CommandLineParser clp = new PosixParser();
-		CommandLine cl = null;
+		CommandLineParser commandLineParser = new PosixParser();
+		CommandLine commandLine = null;
 		try {
-			cl = clp.parse( os, args );
+			commandLine = commandLineParser.parse( options, args );
 		} catch( ParseException pe ) {
-			printUsage( os, USAGE, HEADER, FOOTER );
+			printUsage( options, USAGE, HEADER, FOOTER );
 			System.exit(1);
 		}
-		args = cl.getArgs();
+		args = commandLine.getArgs();
+
+		// Check for the output file option
+		if(commandLine.hasOption("o")){
+		    outputFile = new File(commandLine.getOptionValue("o"));
+		}
+
 		if( args.length > 0 ) {
 			for( String arg : args ) {
 				params.add( arg );
 			}
 		} else {
-			printUsage( os, USAGE, HEADER, FOOTER );
+			printUsage( options, USAGE, HEADER, FOOTER );
 			System.exit(1);
 		}
 	}
@@ -123,7 +135,21 @@ public class MD5Composer {
 	    }
 
 		STIXPackage s = HashComposers.composeMD5HashObservables(fileNames, hashes);
-		System.out.println(s.toXMLString(true));
+		String xmlString = s.toXMLString(true);
+		if(outputFile == null){
+		    System.out.println(xmlString);
+		} else {
+            try {
+                System.out.println("Writing to " + outputFile.getName());
+                BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+                writer.write(xmlString);
+                writer.flush();
+                writer.close();
+            } catch (Exception e) {
+                System.err.println("Exception writing to output file");
+                e.printStackTrace();
+            }
+		}
 		// Codec.marshal( s, System.out );
 	}
 }
