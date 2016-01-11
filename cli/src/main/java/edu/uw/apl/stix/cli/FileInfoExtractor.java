@@ -1,5 +1,5 @@
 /**
- * Copyright © 2014-2015, University of Washington
+ * Copyright © 2014-2016, University of Washington
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,52 +26,38 @@
  */
 package edu.uw.apl.stix.cli;
 
-/**
- * Class which decides which Extractor class to use
- */
-public class Runner {
+import java.util.LinkedList;
+import java.util.List;
 
-	/**
-	 * Program entry point
-	 * @param args
-	 */
-	public static void main(String[] args){
-		if(args.length == 0){
-			System.err.println("Missing type and fiel to extract");
-			System.exit(-1);
+import org.mitre.stix.stix_1.STIXPackage;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import edu.uw.apl.stix.objects.FileObjectObservable;
+import edu.uw.apl.stix.utils.HashExtractors;
+
+/**
+ *
+ * Usage: FileInfoExtractor stixFile
+ *
+ * Extract from a STIX file all md5 hashes.  These are likely subelements
+ * of FileTypeObjects, themselves subelements of Observable and/or Indicator.
+ *
+ * Print the resulting hexbinary strings to stdout, one line at a time.
+ */
+public class FileInfoExtractor extends Extractor {
+
+	public void start() throws Exception {
+		List<STIXPackage> stixPackages = getStixPackages(inFile);
+		List<FileObjectObservable> fileObjects = new LinkedList<FileObjectObservable>();
+		for(STIXPackage stixPackage : stixPackages){
+		    fileObjects.addAll(HashExtractors.getFileObservables(stixPackage));
 		}
-		
-		// Get the correct extractor
-		Extractor extractor = null;
-		switch(args[0].toLowerCase()){
-		case "md5":
-			extractor = new MD5Extractor();
-			break;
-		case "ip":
-			extractor = new IPExtractor();
-			break;
-		case "hostname":
-			extractor = new HostnameExtractor();
-			break;
-		case "fileinfo":
-		    extractor = new FileInfoExtractor();
-			break;
-		}
-		
-		// Make sure that the extractor is set
-		if(extractor == null){
-			System.err.println("Unknown type: "+args[0]);
-			System.exit(-1);
-		}
-		
-		// Run the extractor
-		try{
-			extractor.readArgs(args);
-			extractor.start();
-		} catch(Exception e){
-			e.printStackTrace();
-			System.exit(-1);
-		}
-		
+
+		// Print everything out as json
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		System.out.println(gson.toJson(fileObjects));
 	}
+
 }

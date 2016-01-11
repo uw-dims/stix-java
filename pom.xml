@@ -50,6 +50,7 @@
     -->
     <module>utils</module>
     <module>cli</module>
+    <module>objects</module>
   </modules>
 
   <dependencyManagement>

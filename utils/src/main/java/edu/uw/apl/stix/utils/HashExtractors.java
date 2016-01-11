@@ -45,6 +45,8 @@ import org.mitre.stix.indicator_2.Indicator;
 import org.mitre.stix.stix_1.IndicatorsType;
 import org.mitre.stix.stix_1.STIXPackage;
 
+import edu.uw.apl.stix.objects.FileObjectObservable;
+
 /**
  * @author Stuart Maclean
  *
@@ -54,6 +56,46 @@ import org.mitre.stix.stix_1.STIXPackage;
  *
  */
 public class HashExtractors {
+
+    public static List<FileObjectObservable> getFileObservables(STIXPackage stixPackage){
+        List<FileObjectObservable> observables = new LinkedList<FileObjectObservable>();
+
+        // All top-level indicators, if any
+        IndicatorsType indicators = stixPackage.getIndicators();
+        if(indicators != null){
+            for (IndicatorBaseType indicator : indicators.getIndicators()) {
+                try {
+                    Indicator ind = (Indicator) indicator;
+                    Observable observable = ind.getObservable();
+
+                    if (observable != null) {
+                        FileObjectObservable fileObject = getFileObservable(observable);
+                        if(fileObject != null){
+                            observables.add(fileObject);
+                        }
+                    }
+                } catch (Exception e) {
+                    // Ignore. Probably a null pointer exception
+                }
+            }
+        }
+
+        // All top-level observables, if any
+        Observables ot = stixPackage.getObservables();
+        if( ot == null ){
+            return observables;
+        }
+
+        List<Observable> observableList = ot.getObservables();
+        for( Observable observable : observableList ) {
+            FileObjectObservable fileObject = getFileObservable(observable);
+            if(fileObject != null){
+                observables.add(fileObject);
+            }
+        }
+
+        return observables;
+    }
 
 	/**
 	 * @param stixPackage - a STIX package to scan/parse
@@ -94,6 +136,37 @@ public class HashExtractors {
 		return result;
 	}
 
+    private static FileObjectObservable getFileObservable(Observable observable){
+        ObjectType obj = observable.getObject();
+        ObjectPropertiesType opt = obj.getProperties();
+        // LOOK: any better way than instanceof, yuk!
+        if( opt instanceof FileObjectType ) {
+            FileObjectType fileObject = (FileObjectType)opt;
+
+            // Get the file name/size
+            String fileName = null;
+            long fileSize = 0;
+            try{
+                fileName = (String) fileObject.getFileName().getValue();
+            } catch(Exception e){
+                // Ignore
+            }
+            try{
+                fileSize = Long.parseLong((String) fileObject.getSizeInBytes().getValue());
+            } catch(Exception e){
+                // Ignore
+            }
+
+            FileObjectObservable fileObservable = new FileObjectObservable(fileName, fileSize);
+            // Get the hash information
+            getHashHex(fileObject, fileObservable);
+
+            return fileObservable;
+        }
+
+        return null;
+    }
+
 	private static List<String> getHashesFromObservable(Observable observable){
 	    ObjectType obj = observable.getObject();
         ObjectPropertiesType opt = obj.getProperties();
@@ -106,7 +179,7 @@ public class HashExtractors {
         return Collections.emptyList();
 	}
 
-	static List<String> extractMD5HexBinary( FileObjectType fot ) {
+	private static List<String> extractMD5HexBinary( FileObjectType fot ) {
 		HashListType hlt = fot.getHashes();
 		if( hlt == null )
 			return Collections.emptyList();
@@ -123,5 +196,34 @@ public class HashExtractors {
 			}
 		}
 		return result;
+	}
+
+	private static void getHashHex(FileObjectType fileObject, FileObjectObservable fileObservable){
+	   HashListType hashListType = fileObject.getHashes();
+	   if(hashListType == null){
+	       return;
+	   }
+	   List<HashType> hashes = hashListType.getHashes();
+	   for(HashType hash : hashes){
+           ControlledVocabularyStringType cvst = hash.getType();
+           String hashAlgorithm = (String) cvst.getValue();
+           String hashValue = null;
+           try{
+               hashValue = (String) hash.getSimpleHashValue().getValue();
+           } catch(Exception e){
+               // Ignore
+           }
+           if(hashValue == null){
+               try{
+                   hashValue = (String) hash.getFuzzyHashValue().getValue();
+               } catch(Exception e){
+                   // Ignore
+               }
+           }
+
+           if(hashAlgorithm != null && hashValue != null){
+               fileObservable.addHash(hashAlgorithm, hashValue);
+           }
+	   }
 	}
 }

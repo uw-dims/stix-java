@@ -57,6 +57,7 @@ import edu.uw.apl.stix.utils.HashComposers;
 public class MD5Composer {
     private List<String> params;
     private File outputFile;
+    private File inputFile;
 	
 	static public void main( String[] args ) {
 		MD5Composer main = new MD5Composer();
@@ -76,7 +77,7 @@ public class MD5Composer {
 	private void readArgs( String[] args ) throws Exception {
 		Options options = new Options();
 		options.addOption("o", true, "Output file");
-		// os.addOption("i", true, "Input file");
+		options.addOption("i", true, "Input file");
 
 		final String USAGE = MD5Composer.class.getName() + " (\"hexHash,fileName\" | hexhash)+";
 		final String HEADER = "\nThe arguments are a list of hash and file name pairs and/or just hashes. "
@@ -99,14 +100,20 @@ public class MD5Composer {
 		if(commandLine.hasOption("o")){
 		    outputFile = new File(commandLine.getOptionValue("o"));
 		}
+		// Check for input file
+		if(commandLine.hasOption("i")){
+		    inputFile = new File(commandLine.getOptionValue("i"));
+		}
 
-		if( args.length > 0 ) {
+		if(args.length == 0 && inputFile == null) {
+		    // If there are no pairs specified on the command line or any input file,
+		    // print usage and exit
+            printUsage( options, USAGE, HEADER, FOOTER );
+            System.exit(1);
+        } else if( args.length > 0 ) {
 			for( String arg : args ) {
 				params.add( arg );
 			}
-		} else {
-			printUsage( options, USAGE, HEADER, FOOTER );
-			System.exit(1);
 		}
 	}
 
@@ -150,6 +157,5 @@ public class MD5Composer {
                 e.printStackTrace();
             }
 		}
-		// Codec.marshal( s, System.out );
 	}
 }
