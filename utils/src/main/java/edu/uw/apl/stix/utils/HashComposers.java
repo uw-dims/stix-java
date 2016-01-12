@@ -39,8 +39,11 @@ import org.mitre.cybox.common_2.HashListType;
 import org.mitre.cybox.common_2.HashType;
 import org.mitre.cybox.common_2.SimpleHashValueType;
 import org.mitre.cybox.common_2.StringObjectPropertyType;
+import org.mitre.cybox.common_2.UnsignedLongObjectPropertyType;
 import org.mitre.cybox.objects.FileObjectType;
 import org.mitre.stix.stix_1.STIXPackage;
+
+import edu.uw.apl.stix.objects.FileObjectObservable;
 
 /**
  * @author Stuart Maclean
@@ -100,6 +103,29 @@ public class HashComposers {
 		addMD5HashObservables(fileNames, hashes, observables );
 		return result;
 	}
+	
+    static public STIXPackage composeFileObjectObservables(List<FileObjectObservable> fileObjects) {
+        // Create the basic STIX info
+        org.mitre.stix.stix_1.ObjectFactory of = new org.mitre.stix.stix_1.ObjectFactory();
+        STIXPackage result = of.createSTIXPackage();
+
+        org.mitre.cybox.cybox_2.ObjectFactory of2 = new org.mitre.cybox.cybox_2.ObjectFactory();
+        Observables ot = of2.createObservables();
+        ot.setCyboxMajorVersion("2");
+        ot.setCyboxMinorVersion("1");
+
+        result.setObservables(ot);
+
+        // Prepare the observable list
+        List<Observable> observables = ot.getObservables();
+        List<FileObjectType> fileObjectTypes = asFileObjectHashes(fileObjects);
+        for(FileObjectType fileObjectType : fileObjectTypes){
+            Observable observable = inObservable(fileObjectType);
+            observables.add(observable);
+        }
+        
+        return result;
+    }
 
 	static public void addMD5HashObservables( List<String> fileNames, List<String> hashes,
 											  List<Observable> observables) {
@@ -121,6 +147,14 @@ public class HashComposers {
 		
 	}	
 		
+    static public List<FileObjectType> asFileObjectHashes(List<FileObjectObservable> fileObjects) {
+        List<FileObjectType> result = new ArrayList<FileObjectType>();
+        for(FileObjectObservable fileObject : fileObjects){
+            FileObjectType fo = asFileObjectHash(fileObject);
+            result.add( fo );
+        }
+        return result;
+    }
 		
 	static public List<FileObjectType> asFileObjectHashes(List<String> fileNames, List<String> hashes ) {
 		List<FileObjectType> result = new ArrayList<FileObjectType>();
@@ -132,6 +166,57 @@ public class HashComposers {
 		}
 		return result;
 	}
+	
+	static public FileObjectType asFileObjectHash(FileObjectObservable fileObject){
+	    // Object factories
+	    org.mitre.cybox.common_2.ObjectFactory comonObjectFactory = new org.mitre.cybox.common_2.ObjectFactory();
+	    org.mitre.cybox.default_vocabularies_2.ObjectFactory vocabObjectFactory = new org.mitre.cybox.default_vocabularies_2.ObjectFactory();
+	    org.mitre.cybox.objects.ObjectFactory objectObjectFactory = new org.mitre.cybox.objects.ObjectFactory();
+	    
+	    // Create the hash list
+        HashListType hashListType = comonObjectFactory.createHashListType();
+        List<HashType> hashList = hashListType.getHashes();
+        
+        // Add all the hashes
+        for(String algorithm : fileObject.getHashes().keySet()){
+            // Get the hash value
+            String hash = fileObject.getHash(algorithm);
+            
+            SimpleHashValueType simplehahsValueType = comonObjectFactory.createSimpleHashValueType();
+            simplehahsValueType.setValue(hash);
+            HashType hashType = comonObjectFactory.createHashType();
+            hashType.setSimpleHashValue(simplehahsValueType);
+            
+            HashNameVocab10 hashNameVocab = vocabObjectFactory.createHashNameVocab10();
+            hashNameVocab.setValue(algorithm);
+            hashType.setType(hashNameVocab);
+    
+            hashList.add(hashType);
+        }
+
+        FileObjectType result = objectObjectFactory.createFileObjectType();
+        
+        // Add the size, if its > 0
+        if(fileObject.getFileSize() > 0){
+            UnsignedLongObjectPropertyType sizeType = new UnsignedLongObjectPropertyType();
+            // Note that the value needs to be a string
+            sizeType.setValue(fileObject.getFileSize()+"");
+            sizeType.setCondition(ConditionTypeEnum.EQUALS);
+            result.setSizeInBytes(sizeType);
+        }
+
+        // Only add the file name if it exists
+        String fileName = fileObject.getFileName();
+        if (fileName != null && !"".equals(fileName.trim())) {
+            StringObjectPropertyType fileNameProperty = new StringObjectPropertyType();
+            fileNameProperty.setValue(fileName.trim());
+            fileNameProperty.setCondition(ConditionTypeEnum.EQUALS);
+            result.setFileName(fileNameProperty);
+        }
+
+        result.setHashes(hashListType);
+        return result;
+    }
 
 	static public FileObjectType asFileObjectHash(String fileName, String hash,
 												   String algorithm ) {
@@ -169,5 +254,3 @@ public class HashComposers {
 	}
 }
 
-
-// eof

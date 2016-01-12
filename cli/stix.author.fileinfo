@@ -1,0 +1,28 @@
+#!/bin/bash
+
+DIRNAME=`dirname $0`
+INSTALL_PATH="/opt/dims"
+
+# Check if the script was run from under the install path
+if [[ "$DIRNAME" =~ "$INSTALL_PATH" ]]; then
+   # The dims jars will be installed under $INSTALL_PATH/jars
+   DIRNAME="$INSTALL_PATH/jars/stix"
+else
+   # Running in the maven project directory. The jar is in the target/ directory
+   DIRNAME=$DIRNAME/target
+fi
+
+ARTIFACT=stix-cli
+
+# The code version number is part of the main jar name.  Rather than
+# hard-coding it here, we locate the jar with the LATEST version. Thus
+# we always run the LATEST code, should many versions be present.
+
+JARNAME=`ls $DIRNAME | grep $ARTIFACT | sort -n -r | head -1`
+JARPATH=$DIRNAME/$JARNAME
+
+CLAZZ=edu.uw.apl.stix.cli.FileInfoComposer
+
+exec java -cp "$JARPATH" $CLAZZ "$@"
+
+# eof
