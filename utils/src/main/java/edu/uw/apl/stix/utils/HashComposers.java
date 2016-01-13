@@ -85,25 +85,64 @@ public class HashComposers {
 	 * }
 	 * </pre>
 	 */
-	static public STIXPackage composeMD5HashObservables(List<String> fileNames, List<String> hashes) {
+    static public STIXPackage composeMD5HashObservables(List<String> fileNames, List<String> hashes) {
+        org.mitre.stix.stix_1.ObjectFactory of = new org.mitre.stix.stix_1.ObjectFactory();
+        STIXPackage result = of.createSTIXPackage();
 
-		org.mitre.stix.stix_1.ObjectFactory of =
-			new org.mitre.stix.stix_1.ObjectFactory();
-		STIXPackage result = of.createSTIXPackage();
-		
-		org.mitre.cybox.cybox_2.ObjectFactory of2 =
-			new org.mitre.cybox.cybox_2.ObjectFactory();
-		Observables ot = of2.createObservables();
-		ot.setCyboxMajorVersion( "2" );
-		ot.setCyboxMinorVersion( "1" );
-		
-		result.setObservables( ot );
-		
-		List<Observable> observables = ot.getObservables();
-		addMD5HashObservables(fileNames, hashes, observables );
-		return result;
-	}
+        org.mitre.cybox.cybox_2.ObjectFactory of2 = new org.mitre.cybox.cybox_2.ObjectFactory();
+        Observables ot = of2.createObservables();
+        ot.setCyboxMajorVersion("2");
+        ot.setCyboxMinorVersion("1");
+
+        result.setObservables(ot);
+
+        List<Observable> observables = ot.getObservables();
+        addMD5HashObservables(fileNames, hashes, observables);
+        return result;
+    }
 	
+    /**
+    *
+    * @param fileObjects a list of FileObjectObservables, to be inserted into
+    * a STIX package. Looking at the insertion as an XPath problem, we will
+    * be creating SimpleHashValueTypes according to this path
+    *
+    * "/stix:STIX_Package/stix:Observables/cybox:Observable/cybox:Object/cybox:Properties/FileObj:Hashes/cyboxCommon:Hash/cyboxCommon:Simple_Hash_Value"
+    *
+    * @return - a new STIX package containing the supplied hashes as
+    * file Observables. The instance document will look something like
+    *
+    * <pre>
+    * {@code
+       <ns114:Observables cybox_major_version="2" cybox_minor_version="1">
+         <cybox:Observable>
+            <cybox:Object>
+                <cybox:Properties
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="FileObj:FileObjectType">
+                    <FileObj:File_Name condition="Equals">FilePath</FileObj:File_Name>
+                    <FileObj:Size_In_Bytes condition="Equals">1234</FileObj:Size_In_Bytes>
+                    <FileObj:Hashes>
+                        <cyboxCommon:Hash>
+                            <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA256</cyboxCommon:Type>
+                            <cyboxCommon:Simple_Hash_Value>SHA256 hash hex</cyboxCommon:Simple_Hash_Value>
+                        </cyboxCommon:Hash>
+                        <cyboxCommon:Hash>
+                            <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA1</cyboxCommon:Type>
+                            <cyboxCommon:Simple_Hash_Value>SHA1 hash hex</cyboxCommon:Simple_Hash_Value>
+                        </cyboxCommon:Hash>
+                        <cyboxCommon:Hash>
+                            <cyboxCommon:Type xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                            <cyboxCommon:Simple_Hash_Value>MD5 hash hex</cyboxCommon:Simple_Hash_Value>
+                        </cyboxCommon:Hash>
+                    </FileObj:Hashes>
+                </cybox:Properties>
+            </cybox:Object>
+        </cybox:Observable>
+   </ns114:Observables>
+
+    * }
+    * </pre>
+    */
     static public STIXPackage composeFileObjectObservables(List<FileObjectObservable> fileObjects) {
         // Create the basic STIX info
         org.mitre.stix.stix_1.ObjectFactory of = new org.mitre.stix.stix_1.ObjectFactory();
@@ -127,7 +166,13 @@ public class HashComposers {
         return result;
     }
 
-	static public void addMD5HashObservables( List<String> fileNames, List<String> hashes,
+    /**
+     * Creates a list of observables with FileObjectTypes containing the file name and hash from the lists
+     * @param fileNames
+     * @param hashes
+     * @param observables
+     */
+	private static void addMD5HashObservables( List<String> fileNames, List<String> hashes,
 											  List<Observable> observables) {
 		List<FileObjectType> fos = asFileObjectHashes(fileNames, hashes);
 		for( FileObjectType fo : fos ) {
@@ -136,18 +181,26 @@ public class HashComposers {
 		}		
 	}
 
-	static Observable inObservable( ObjectPropertiesType op ) {
-		org.mitre.cybox.cybox_2.ObjectFactory of =
-			new org.mitre.cybox.cybox_2.ObjectFactory();
-		ObjectType obj = of.createObjectType();
-		obj.setProperties( op );
-		Observable obs = of.createObservable();
-		obs.setObject( obj );
-		return obs;
-		
-	}	
-		
-    static public List<FileObjectType> asFileObjectHashes(List<FileObjectObservable> fileObjects) {
+	/**
+	 * Wrap the ObjectPropertiesType in an Observable object
+	 * @param op
+	 * @return
+	 */
+    private static Observable inObservable(ObjectPropertiesType op) {
+        org.mitre.cybox.cybox_2.ObjectFactory of = new org.mitre.cybox.cybox_2.ObjectFactory();
+        ObjectType obj = of.createObjectType();
+        obj.setProperties(op);
+        Observable obs = of.createObservable();
+        obs.setObject(obj);
+        return obs;
+    }
+
+	/**
+	 * Creates a list of FileObjectTypes containing the information in each FileObjectObservable
+	 * @param fileObjects
+	 * @return
+	 */
+    private static List<FileObjectType> asFileObjectHashes(List<FileObjectObservable> fileObjects) {
         List<FileObjectType> result = new ArrayList<FileObjectType>();
         for(FileObjectObservable fileObject : fileObjects){
             FileObjectType fo = asFileObjectHash(fileObject);
@@ -155,8 +208,14 @@ public class HashComposers {
         }
         return result;
     }
-		
-	static public List<FileObjectType> asFileObjectHashes(List<String> fileNames, List<String> hashes ) {
+
+    /**
+     * Creates a list of FileObjectTypes containing each filename/hash
+     * @param fileNames
+     * @param hashes
+     * @return
+     */
+	private static List<FileObjectType> asFileObjectHashes(List<String> fileNames, List<String> hashes ) {
 		List<FileObjectType> result = new ArrayList<FileObjectType>();
 		for(int i =0; i < hashes.size(); i++){
 		    String hash = hashes.get(i);
@@ -166,8 +225,13 @@ public class HashComposers {
 		}
 		return result;
 	}
-	
-	static public FileObjectType asFileObjectHash(FileObjectObservable fileObject){
+
+	/**
+	 * Create a FileObjectType from a FileObjectObservable
+	 * @param fileObject
+	 * @return
+	 */
+	private static FileObjectType asFileObjectHash(FileObjectObservable fileObject){
 	    // Object factories
 	    org.mitre.cybox.common_2.ObjectFactory comonObjectFactory = new org.mitre.cybox.common_2.ObjectFactory();
 	    org.mitre.cybox.default_vocabularies_2.ObjectFactory vocabObjectFactory = new org.mitre.cybox.default_vocabularies_2.ObjectFactory();
@@ -218,30 +282,34 @@ public class HashComposers {
         return result;
     }
 
-	static public FileObjectType asFileObjectHash(String fileName, String hash,
-												   String algorithm ) {
-		org.mitre.cybox.common_2.ObjectFactory of =
-			new org.mitre.cybox.common_2.ObjectFactory();
-		SimpleHashValueType shvt = of.createSimpleHashValueType();
-		shvt.setValue( hash );
-		HashType ht = of.createHashType();
-		ht.setSimpleHashValue( shvt );
+	/**
+	 * Create a FileObjectType from a filename/hash pair
+	 * @param fileName
+	 * @param hash
+	 * @param algorithm
+	 * @return
+	 */
+    private static FileObjectType asFileObjectHash(String fileName, String hash, String algorithm) {
+        org.mitre.cybox.common_2.ObjectFactory commonObjectFactory = new org.mitre.cybox.common_2.ObjectFactory();
+        org.mitre.cybox.default_vocabularies_2.ObjectFactory vocabObjectFactory = new org.mitre.cybox.default_vocabularies_2.ObjectFactory();
+        org.mitre.cybox.objects.ObjectFactory objectObjectFactory = new org.mitre.cybox.objects.ObjectFactory();
 
-		org.mitre.cybox.default_vocabularies_2.ObjectFactory of2 =
-			new org.mitre.cybox.default_vocabularies_2.ObjectFactory();
-		HashNameVocab10 hnv = of2.createHashNameVocab10();
-		hnv.setValue( algorithm );
-		ht.setType( hnv );
+        SimpleHashValueType simplehashValue = commonObjectFactory.createSimpleHashValueType();
+        simplehashValue.setValue(hash);
+        HashType hashType = commonObjectFactory.createHashType();
+        hashType.setSimpleHashValue(simplehashValue);
 
-		HashListType hlt = of.createHashListType();
-		List<HashType> hts = hlt.getHashes();
-		hts.add( ht );
-		
-		org.mitre.cybox.objects.ObjectFactory of3 =
-			new org.mitre.cybox.objects.ObjectFactory();
-		FileObjectType result = of3.createFileObjectType();
+        HashNameVocab10 hashNameVocab = vocabObjectFactory.createHashNameVocab10();
+        hashNameVocab.setValue(algorithm);
+        hashType.setType(hashNameVocab);
 
-		// Only add the file name if it exists
+        HashListType hashListType = commonObjectFactory.createHashListType();
+        List<HashType> hashList = hashListType.getHashes();
+        hashList.add(hashType);
+
+        FileObjectType result = objectObjectFactory.createFileObjectType();
+
+        // Only add the file name if it exists
         if (fileName != null && !"".equals(fileName.trim())) {
             StringObjectPropertyType fileNameProperty = new StringObjectPropertyType();
             fileNameProperty.setValue(fileName.trim());
@@ -249,8 +317,8 @@ public class HashComposers {
             result.setFileName(fileNameProperty);
         }
 
-		result.setHashes( hlt );
-		return result;
-	}
+        result.setHashes(hashListType);
+        return result;
+    }
 }
 
