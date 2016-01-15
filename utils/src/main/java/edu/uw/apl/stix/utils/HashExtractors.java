@@ -70,7 +70,8 @@ public class HashExtractors {
 
                     if (observable != null) {
                         FileObjectObservable fileObject = getFileObservable(observable);
-                        if(fileObject != null){
+                        // Only add useful objects
+                        if(fileObject != null && fileObject.hasInformation()){
                             observables.add(fileObject);
                         }
                     }
@@ -89,7 +90,8 @@ public class HashExtractors {
         List<Observable> observableList = ot.getObservables();
         for( Observable observable : observableList ) {
             FileObjectObservable fileObject = getFileObservable(observable);
-            if(fileObject != null){
+            // Only add useful objects
+            if(fileObject != null && fileObject.hasInformation()){
                 observables.add(fileObject);
             }
         }

@@ -74,6 +74,17 @@ public class FileObjectObservable {
     }
 
     /**
+     * Checks if this FileObjectObservable has any useful information.
+     * Useful information consists of a file name or hashes.
+     * <br />
+     * If the file name is null and there are no hashes, this will return false
+     * @return
+     */
+    public boolean hasInformation(){
+        return !(fileName == null && hashes.isEmpty());
+    }
+
+    /**
      * @return the fileName
      */
     public String getFileName() {
