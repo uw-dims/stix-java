@@ -107,6 +107,39 @@ Example:
 
 ..
 
+.. _fileObservable:
+
+----------------------------
+File Observable Information
+----------------------------
+
+You can extract information about all the File Observables from a STIX document.
+This will return a JSON list of objects.
+
+.. code-block:: none
+
+    $ stix.extract.fileinfo input-stix-document.xml
+    [
+      {
+        "fileName": "Some File.pdf",
+        "fileSize": 0,
+        "hashes": {}
+      },
+      {
+        "fileName": "Some Other file.pdf",
+        "fileSize": 1234,
+        "hashes": {
+          "SHA256": "42cff127a81e0d9ad2876ec9e0787d7ac3926c6bbe8c7f2c6d8cd87895431e07",
+          "SHA1": "1e487c9378afb0191e487018a211aee6a3251104",
+          "MD5": "3e48a8d6d2301f4a3ffd3bcb3f156abe"
+        }
+      }
+    ]
+
+..
+
+Not all file observables have all the information.
+
 
 *************************
 Creating a STIX Document
