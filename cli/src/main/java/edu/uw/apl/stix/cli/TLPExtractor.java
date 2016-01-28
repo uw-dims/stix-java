@@ -43,7 +43,7 @@ public class TLPExtractor extends Extractor {
 	public void start() throws Exception {
 		List<STIXPackage> stixPackages = getStixPackages(inFile);
 		for(STIXPackage stixPackage : stixPackages){
-		    String tlpMarking = TLPMarkingExtractor.getHighestTLPMarking(stixPackage);
+		    String tlpMarking = TLPMarkingExtractor.getDocumentTLPMarking(stixPackage);
 		    if(tlpMarking != null){
 		        System.out.println("TLP Marking: "+tlpMarking);
 		    } else {

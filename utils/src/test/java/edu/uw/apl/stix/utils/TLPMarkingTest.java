@@ -34,54 +34,28 @@
 
 package edu.uw.apl.stix.utils;
 
-import java.util.List;
-
-import org.mitre.data_marking.extensions.markingstructure.TLPColorEnum;
-import org.mitre.data_marking.extensions.markingstructure.TLPMarkingStructureType;
-import org.mitre.data_marking.marking_1.MarkingSpecificationType;
-import org.mitre.data_marking.marking_1.MarkingStructureType;
-import org.mitre.stix.stix_1.STIXPackage;
+import junit.framework.TestCase;
 
 /**
- * Get details about any TLP marking within a STIX Document
+ * Test verifying TLP colors
  */
-public class TLPMarkingExtractor {
+public class TLPMarkingTest extends TestCase {
+    private static final String[] VALID_COLORS = {"green", "GREEN", "greEN",
+            "RED", "red", "AMBER", "amBER", "white", "WHITE" };
 
-    /**
-     * Get the TLP marking for the overall document
-     * @param stixPackage
-     * @return
-     */
-    public static String getDocumentTLPMarking(STIXPackage stixPackage){
-        List<MarkingSpecificationType> markings = stixPackage.getSTIXHeader().getHandling().getMarkings();
+    private static final String[] INVALID_COLORS = {"blue", "BLUe", "magenta", null };
 
-        for(MarkingSpecificationType marking : markings){
-            List<MarkingStructureType> structures = marking.getMarkingStructures();
-            for(MarkingStructureType structure : structures){
-                if(structure instanceof TLPMarkingStructureType){
-                    TLPMarkingStructureType tlpMarking = (TLPMarkingStructureType) structure;
-                    return tlpMarking.getColor().toString();
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Check if a string is a valid TLP color string.
-     * Case of the string doesn't matter
-     * @param value
-     * @return
-     */
-    public static boolean isvalidTLPMarking(String value){
-        try{
-            // Make sure the value string is in upper case
-            TLPColorEnum tlpColor = TLPColorEnum.valueOf(value.toUpperCase());
-            return tlpColor != null;
-        } catch(Exception e){
-            return false;
+    public void testValidTLPColors() throws Exception {
+        for(String color : VALID_COLORS){
+            System.out.println("Testing valid color "+color);
+            assertEquals(TLPMarkingExtractor.isvalidTLPMarking(color), true);
         }
     }
 
+    public void testInvalidTLPColors() throws Exception {
+        for(String color : INVALID_COLORS){
+            System.out.println("Testing invalid color "+color);
+            assertEquals(TLPMarkingExtractor.isvalidTLPMarking(color), false);
+        }
+    }
 }
