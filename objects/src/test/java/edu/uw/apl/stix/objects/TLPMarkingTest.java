@@ -57,4 +57,35 @@ public class TLPMarkingTest extends TestCase {
             assertEquals(TLPMarking.isValidLevel(color), false);
         }
     }
+
+    public void testComparison() throws Exception {
+        System.out.println("Testing TLPMarking comparisons");
+        TLPMarking red = new TLPMarking("red");
+        TLPMarking amber = new TLPMarking("amber");
+        TLPMarking green = new TLPMarking("green");
+        TLPMarking white = new TLPMarking("white");
+
+        // Check equal comparisons
+        assertEquals(red.compareTo(red), 0);
+        assertEquals(amber.compareTo(amber), 0);
+        assertEquals(green.compareTo(green), 0);
+        assertEquals(white.compareTo(white), 0);
+
+        // Compare red values
+        assertEquals(red.compareTo(amber) > 0, true);
+        assertEquals(red.compareTo(green) > 0, true);
+        assertEquals(red.compareTo(white) > 0, true);
+        // Amber
+        assertEquals(amber.compareTo(red) < 0, true);
+        assertEquals(amber.compareTo(green) > 0, true);
+        assertEquals(amber.compareTo(white) > 0, true);
+        // Green
+        assertEquals(green.compareTo(red) < 0, true);
+        assertEquals(green.compareTo(amber) < 0, true);
+        assertEquals(green.compareTo(white) > 0, true);
+        // White
+        assertEquals(white.compareTo(red) < 0, true);
+        assertEquals(white.compareTo(amber) < 0, true);
+        assertEquals(white.compareTo(green) < 0, true);
+    }
 }

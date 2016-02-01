@@ -48,7 +48,7 @@ public class TLPMarking implements Comparable<TLPMarking> {
      */
     public TLPMarking(String level) throws IllegalArgumentException {
         if(isValidLevel(level)){
-            this.level = TLPMarkingEnum.valueOf(level);
+            this.level = TLPMarkingEnum.valueOf(level.trim().toUpperCase());
         } else {
             throw new IllegalArgumentException("Invlid TLP level "+level);
         }
