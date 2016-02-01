@@ -56,6 +56,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.uw.apl.stix.objects.TLPMarking;
+import edu.uw.apl.stix.utils.TLPMarkingExtractor;
 
 /**
  * Abstract class all the Extractors will follow
@@ -96,6 +97,7 @@ public abstract class Extractor {
 			printUsage( options, USAGE, HEADER, FOOTER );
 			System.exit(1);
 		}
+		// Check for min/max TLP levels
 		if(cl.hasOption(MAX_TLP_OPTION)){
 		    String tlpLevel = cl.getOptionValue(MAX_TLP_OPTION);
 		    checkTlpLevel(tlpLevel);
@@ -105,6 +107,12 @@ public abstract class Extractor {
             String tlpLevel = cl.getOptionValue(MIN_TLP_OPTION);
             checkTlpLevel(tlpLevel);
             minTlpLevel = new TLPMarking(tlpLevel);
+        }
+        // Make sure that maxTlpLevel >= minTlpLevel
+        if(maxTlpLevel != null && minTlpLevel != null &&
+                maxTlpLevel.compareTo(minTlpLevel) < 0){
+            System.err.println("Error: Maximum TLP level can not be below minimum TLP level");
+            System.exit(-1);
         }
 		args = cl.getArgs();
 		if( args.length >= 2 ) {
@@ -134,11 +142,12 @@ public abstract class Extractor {
 	}
 	
 	/**
-	 * Get the STIXPackage from parsing the XML input file
+	 * Get the STIXPackage from parsing the XML input file. <br>
+	 * The returned STIXPackage objects will be within the min/max TLP levels
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<STIXPackage> getStixPackages(File inFile) throws Exception {
+	public List<STIXPackage> getStixPackages(File inFile) throws Exception {
 	    List<STIXPackage> packages = new ArrayList<STIXPackage>();
 
 	    // Parse the XML
@@ -199,17 +208,60 @@ public abstract class Extractor {
 	            // Take the XML string, and let the STIX library parse it
 	            String xmlString = stringWriter.toString();
 	            STIXPackage stixPackage = STIXPackage.fromXMLString(xmlString);
-	            packages.add(stixPackage);
+	            // Check the TLP level
+	            if(hasValidTlpMarking(stixPackage)){
+	                packages.add(stixPackage);
+	            }
 	        }
 	    } else {
 	        // We should be dealing with a single STIX document as the root
 	        String text = FileUtils.readFileToString(inFile);
-	        packages.add(STIXPackage.fromXMLString(text));
+	        STIXPackage stixPackage = STIXPackage.fromXMLString(text);
+	        // Check the TLP level
+	        if(hasValidTlpMarking(stixPackage)){
+	            packages.add(stixPackage);
+	        }
 	    }
 
 	    // Set stdout back to its original value
 	    System.setOut(originalOut);
 	    return packages;
+	}
+
+	/**
+	 * Check if the TLP marking on a STIXPackage is within our min/max TLP levels. <br>
+	 * If the STIXPackage does not have a TLP level, it will return true
+	 * @param stixPackage
+	 * @return
+	 */
+	protected boolean hasValidTlpMarking(STIXPackage stixPackage){
+	    // If no min/max levels are specified, return true
+	    if(minTlpLevel == null && maxTlpLevel == null){
+	        return true;
+	    }
+
+	    String tlpString = TLPMarkingExtractor.getDocumentTLPMarking(stixPackage);
+	    TLPMarking tlpMarking = null;
+	    if(TLPMarking.isValidLevel(tlpString)){
+	        tlpMarking = new TLPMarking(tlpString);
+	    } else {
+	        // No marking, default to returning true
+	        return true;
+	    }
+	    // Check if both a max and minimum are specified
+	    if(minTlpLevel != null && maxTlpLevel != null){
+            return minTlpLevel.compareTo(tlpMarking) <= 0 &&
+                    maxTlpLevel.compareTo(tlpMarking) >= 0;
+	    }
+
+	    if(minTlpLevel != null && minTlpLevel.compareTo(tlpMarking) <= 0){
+	        return true;
+	    }
+	    if(maxTlpLevel != null && maxTlpLevel.compareTo(tlpMarking) >= 0){
+	        return true;
+	    }
+	    // Comparisons failed, return false
+	    return false;
 	}
 	
 	/**
