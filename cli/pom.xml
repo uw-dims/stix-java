@@ -6,11 +6,11 @@
 		<groupId>edu.uw.apl.commons</groupId>
 		<artifactId>stix-parent</artifactId>
 		<!-- Our major version number encodes the Mitre STIX release -->
-		<version>120.0.1</version>
+		<version>120.0.2</version>
 	</parent>
 
 	<artifactId>stix-cli</artifactId>
-	<version>120.0.1</version>
+	<version>120.0.2</version>
 	<packaging>jar</packaging>
 	<name>STIX Java: Sample Command Line Programs</name>
 

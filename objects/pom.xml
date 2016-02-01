@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>edu.uw.apl.commons</groupId>
 		<artifactId>stix-parent</artifactId>
-		<version>120.0.1</version>
+		<version>120.0.2</version>
 	</parent>
 
 	<groupId>edu.uw.apl.commons</groupId>
 	<artifactId>stix-objects</artifactId>
-	<version>120.0.1</version>
+	<version>120.0.2</version>
 	<name>stix-objects</name>
 
 	<properties>

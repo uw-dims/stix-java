@@ -18,7 +18,7 @@
        numbers to work with.
   -->
   <name>STIX Java: Parent Pom</name>
-  <version>120.0.1</version>
+  <version>120.0.2</version>
   <description>A Java Binding To Mitre's STIX language</description>
   <url>http://eis.apl.uw.edu</url>
 
