@@ -55,7 +55,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.uw.apl.stix.utils.TLPMarkingExtractor;
+import edu.uw.apl.stix.objects.TLPMarking;
 
 /**
  * Abstract class all the Extractors will follow
@@ -76,8 +76,8 @@ public abstract class Extractor {
 
 	protected File inFile;
 	protected Options options = new Options();
-	protected String maxTlpLevel;
-	protected String minTlpLevel;
+	protected TLPMarking maxTlpLevel;
+	protected TLPMarking minTlpLevel;
 	
 	/**
 	 * Read and parse the command line arguments
@@ -97,12 +97,14 @@ public abstract class Extractor {
 			System.exit(1);
 		}
 		if(cl.hasOption(MAX_TLP_OPTION)){
-		    maxTlpLevel = cl.getOptionValue(MAX_TLP_OPTION);
-		    checkTlpLevel(maxTlpLevel);
+		    String tlpLevel = cl.getOptionValue(MAX_TLP_OPTION);
+		    checkTlpLevel(tlpLevel);
+		    maxTlpLevel = new TLPMarking(tlpLevel);
 		}
         if(cl.hasOption(MIN_TLP_OPTION)){
-            minTlpLevel = cl.getOptionValue(MIN_TLP_OPTION);
-            checkTlpLevel(minTlpLevel);
+            String tlpLevel = cl.getOptionValue(MIN_TLP_OPTION);
+            checkTlpLevel(tlpLevel);
+            minTlpLevel = new TLPMarking(tlpLevel);
         }
 		args = cl.getArgs();
 		if( args.length >= 2 ) {
@@ -125,7 +127,7 @@ public abstract class Extractor {
 	 * @param level
 	 */
 	protected void checkTlpLevel(String level){
-        if(!TLPMarkingExtractor.isvalidTLPMarking(level)){
+        if(!TLPMarking.isValidLevel(level)){
             System.err.println("Error: Invalid TLP marking: "+level);
             System.exit(-1);
         }

@@ -36,7 +36,6 @@ package edu.uw.apl.stix.utils;
 
 import java.util.List;
 
-import org.mitre.data_marking.extensions.markingstructure.TLPColorEnum;
 import org.mitre.data_marking.extensions.markingstructure.TLPMarkingStructureType;
 import org.mitre.data_marking.marking_1.MarkingSpecificationType;
 import org.mitre.data_marking.marking_1.MarkingStructureType;
@@ -66,22 +65,6 @@ public class TLPMarkingExtractor {
         }
 
         return null;
-    }
-
-    /**
-     * Check if a string is a valid TLP color string.
-     * Case of the string doesn't matter
-     * @param value
-     * @return
-     */
-    public static boolean isvalidTLPMarking(String value){
-        try{
-            // Make sure the value string is in upper case
-            TLPColorEnum tlpColor = TLPColorEnum.valueOf(value.trim().toUpperCase());
-            return tlpColor != null;
-        } catch(Exception e){
-            return false;
-        }
     }
 
 }

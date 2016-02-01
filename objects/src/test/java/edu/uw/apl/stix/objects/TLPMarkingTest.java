@@ -31,8 +31,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.uw.apl.stix.utils;
+package edu.uw.apl.stix.objects;
 
 import junit.framework.TestCase;
 
@@ -48,14 +47,14 @@ public class TLPMarkingTest extends TestCase {
     public void testValidTLPColors() throws Exception {
         for(String color : VALID_COLORS){
             System.out.println("Testing valid color "+color);
-            assertEquals(TLPMarkingExtractor.isvalidTLPMarking(color), true);
+            assertEquals(TLPMarking.isValidLevel(color), true);
         }
     }
 
     public void testInvalidTLPColors() throws Exception {
         for(String color : INVALID_COLORS){
             System.out.println("Testing invalid color "+color);
-            assertEquals(TLPMarkingExtractor.isvalidTLPMarking(color), false);
+            assertEquals(TLPMarking.isValidLevel(color), false);
         }
     }
 }
