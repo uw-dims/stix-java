@@ -55,11 +55,29 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import edu.uw.apl.stix.utils.TLPMarkingExtractor;
+
 /**
  * Abstract class all the Extractors will follow
  */
 public abstract class Extractor {
+    /**
+     * The maximum TLP level command line option
+     */
+    public static final String MAX_TLP_OPTION = "maxTlp";
+    /**
+     * The minumum TLP level command line option
+     */
+    public static final String MIN_TLP_OPTION = "minTlp";
+
+    protected static final String USAGE = "(Options) inputFile";
+    protected static final String HEADER = "";
+    protected static final String FOOTER = "";
+
 	protected File inFile;
+	protected Options options = new Options();
+	protected String maxTlpLevel;
+	protected String minTlpLevel;
 	
 	/**
 	 * Read and parse the command line arguments
@@ -67,32 +85,50 @@ public abstract class Extractor {
 	 * @throws Exception
 	 */
 	public void readArgs( String[] args ) throws Exception {
-		Options os = new Options();
-
-		final String USAGE = "inFile";
-		final String HEADER = "";
-		final String FOOTER = "";
+	    options.addOption(MAX_TLP_OPTION, true, "Maximum TLP marking color");
+	    options.addOption(MIN_TLP_OPTION, true, "Minimum TLP marking color");
 		
 		CommandLineParser clp = new PosixParser();
 		CommandLine cl = null;
 		try {
-			cl = clp.parse( os, args );
+			cl = clp.parse( options, args );
 		} catch( ParseException pe ) {
-			printUsage( os, USAGE, HEADER, FOOTER );
+			printUsage( options, USAGE, HEADER, FOOTER );
 			System.exit(1);
 		}
+		if(cl.hasOption(MAX_TLP_OPTION)){
+		    maxTlpLevel = cl.getOptionValue(MAX_TLP_OPTION);
+		    checkTlpLevel(maxTlpLevel);
+		}
+        if(cl.hasOption(MIN_TLP_OPTION)){
+            minTlpLevel = cl.getOptionValue(MIN_TLP_OPTION);
+            checkTlpLevel(minTlpLevel);
+        }
 		args = cl.getArgs();
 		if( args.length >= 2 ) {
 			inFile = new File( args[1] );
 			if( !inFile.isFile() ) {
 				// like bash would do, write to stderr...
-				System.err.println( inFile + ": No such file or directory" );
+				System.err.println("Error: " + inFile + ": No such file or directory" );
 				System.exit(-1);
 			}
 		} else {
-			printUsage( os, USAGE, HEADER, FOOTER );
+		    System.err.println("Error: No input file specified");
+			printUsage( options, USAGE, HEADER, FOOTER );
 			System.exit(1);
 		}
+	}
+
+	/**
+	 * Check if the provided value is a valid TLP marking level.
+	 * If it is not, exit with an error code
+	 * @param level
+	 */
+	protected void checkTlpLevel(String level){
+        if(!TLPMarkingExtractor.isvalidTLPMarking(level)){
+            System.err.println("Error: Invalid TLP marking: "+level);
+            System.exit(-1);
+        }
 	}
 	
 	/**
