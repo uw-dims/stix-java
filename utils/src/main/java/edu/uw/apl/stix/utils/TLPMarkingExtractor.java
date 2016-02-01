@@ -77,7 +77,7 @@ public class TLPMarkingExtractor {
     public static boolean isvalidTLPMarking(String value){
         try{
             // Make sure the value string is in upper case
-            TLPColorEnum tlpColor = TLPColorEnum.valueOf(value.toUpperCase());
+            TLPColorEnum tlpColor = TLPColorEnum.valueOf(value.trim().toUpperCase());
             return tlpColor != null;
         } catch(Exception e){
             return false;
