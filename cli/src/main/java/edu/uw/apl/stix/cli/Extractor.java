@@ -56,7 +56,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.uw.apl.stix.objects.TLPMarking;
-import edu.uw.apl.stix.utils.TLPMarkingExtractor;
+import edu.uw.apl.stix.utils.HeaderExtractor;
 
 /**
  * Abstract class all the Extractors will follow
@@ -240,7 +240,7 @@ public abstract class Extractor {
 	        return true;
 	    }
 
-	    String tlpString = TLPMarkingExtractor.getDocumentTLPMarking(stixPackage);
+	    String tlpString = HeaderExtractor.getDocumentTLPMarking(stixPackage);
 	    TLPMarking tlpMarking = null;
 	    if(TLPMarking.isValidLevel(tlpString)){
 	        tlpMarking = new TLPMarking(tlpString);

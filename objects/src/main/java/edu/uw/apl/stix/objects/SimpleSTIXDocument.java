@@ -32,39 +32,66 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.uw.apl.stix.utils;
+package edu.uw.apl.stix.objects;
 
 import java.util.List;
 
-import org.mitre.data_marking.extensions.markingstructure.TLPMarkingStructureType;
-import org.mitre.data_marking.marking_1.MarkingSpecificationType;
-import org.mitre.data_marking.marking_1.MarkingStructureType;
-import org.mitre.stix.stix_1.STIXPackage;
-
 /**
- * Get details about any TLP marking within a STIX Document
+ * Class for serializing the basic information to/from a STIX document
  */
-public class TLPMarkingExtractor {
+public class SimpleSTIXDocument {
+    private SimpleSTIXHeader header;
+    private List<String> observableIpAddresses;
+    private List<String> observableHostnames;
+    private List<FileObjectObservable> observableFiles;
 
     /**
-     * Get the TLP marking for the overall document
-     * @param stixPackage
-     * @return
+     * @return the header
      */
-    public static String getDocumentTLPMarking(STIXPackage stixPackage){
-        List<MarkingSpecificationType> markings = stixPackage.getSTIXHeader().getHandling().getMarkings();
-
-        for(MarkingSpecificationType marking : markings){
-            List<MarkingStructureType> structures = marking.getMarkingStructures();
-            for(MarkingStructureType structure : structures){
-                if(structure instanceof TLPMarkingStructureType){
-                    TLPMarkingStructureType tlpMarking = (TLPMarkingStructureType) structure;
-                    return tlpMarking.getColor().toString();
-                }
-            }
-        }
-
-        return null;
+    public SimpleSTIXHeader getHeader() {
+        return header;
+    }
+    /**
+     * @param header the header to set
+     */
+    public void setHeader(SimpleSTIXHeader header) {
+        this.header = header;
+    }
+    /**
+     * @return the observableIpAddresses
+     */
+    public List<String> getObservableIpAddresses() {
+        return observableIpAddresses;
+    }
+    /**
+     * @param observableIpAddresses the observableIpAddresses to set
+     */
+    public void setObservableIpAddresses(List<String> observableIpAddresses) {
+        this.observableIpAddresses = observableIpAddresses;
+    }
+    /**
+     * @return the observableHostnames
+     */
+    public List<String> getObservableHostnames() {
+        return observableHostnames;
+    }
+    /**
+     * @param observableHostnames the observableHostnames to set
+     */
+    public void setObservableHostnames(List<String> observableHostnames) {
+        this.observableHostnames = observableHostnames;
     }
 
+    /**
+     * @return the observableFiles
+     */
+    public List<FileObjectObservable> getObservableFiles() {
+        return observableFiles;
+    }
+    /**
+     * @param observableFiles the observableFiles to set
+     */
+    public void setObservableFiles(List<FileObjectObservable> observableFiles) {
+        this.observableFiles = observableFiles;
+    }
 }

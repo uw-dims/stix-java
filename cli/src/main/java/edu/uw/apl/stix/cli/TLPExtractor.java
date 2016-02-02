@@ -26,11 +26,16 @@
  */
 package edu.uw.apl.stix.cli;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.mitre.stix.stix_1.STIXPackage;
 
-import edu.uw.apl.stix.utils.TLPMarkingExtractor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import edu.uw.apl.stix.objects.SimpleSTIXHeader;
+import edu.uw.apl.stix.utils.HeaderExtractor;
 
 /**
  * Usage: TLPExtractor stixFile
@@ -42,14 +47,19 @@ public class TLPExtractor extends Extractor {
 
 	public void start() throws Exception {
 		List<STIXPackage> stixPackages = getStixPackages(inFile);
+		List<SimpleSTIXHeader> headers = new LinkedList<SimpleSTIXHeader>();
 		for(STIXPackage stixPackage : stixPackages){
-		    String tlpMarking = TLPMarkingExtractor.getDocumentTLPMarking(stixPackage);
+		    headers.add(HeaderExtractor.getHeader(stixPackage));
+		    String tlpMarking = HeaderExtractor.getDocumentTLPMarking(stixPackage);
 		    if(tlpMarking != null){
 		        System.out.println("TLP Marking: "+tlpMarking);
 		    } else {
 		        System.out.println("No TLP marking");
 		    }
 		}
+
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		System.out.println(gson.toJson(headers));
 	}
 
 }
