@@ -74,6 +74,7 @@ public class Runner {
 		try{
 			extractor.readArgs(args);
 			extractor.start();
+			extractor.close();
 		} catch(Exception e){
 			e.printStackTrace();
 			System.exit(-1);

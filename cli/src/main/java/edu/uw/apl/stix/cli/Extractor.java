@@ -26,7 +26,11 @@
  */
 package edu.uw.apl.stix.cli;
 
+import java.io.BufferedOutputStream;
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -61,7 +65,7 @@ import edu.uw.apl.stix.utils.HeaderExtractor;
 /**
  * Abstract class all the Extractors will follow
  */
-public abstract class Extractor {
+public abstract class Extractor implements Closeable {
     /**
      * The maximum TLP level command line option
      */
@@ -70,12 +74,18 @@ public abstract class Extractor {
      * The minumum TLP level command line option
      */
     public static final String MIN_TLP_OPTION = "minTlp";
+    /**
+     * Redirect output to a file option
+     */
+    public static final String OUTPUT_FILE_OPTION = "o";
 
     protected static final String USAGE = "(Options) inputFile";
     protected static final String HEADER = "";
     protected static final String FOOTER = "";
 
 	protected File inFile;
+	protected OutputStream output;
+	protected File outFile;
 	protected Options options = new Options();
 	protected TLPMarking maxTlpLevel;
 	protected TLPMarking minTlpLevel;
@@ -88,6 +98,7 @@ public abstract class Extractor {
 	public void readArgs( String[] args ) throws Exception {
 	    options.addOption(MAX_TLP_OPTION, true, "Maximum TLP marking color");
 	    options.addOption(MIN_TLP_OPTION, true, "Minimum TLP marking color");
+	    options.addOption(OUTPUT_FILE_OPTION, true, "Output file");
 		
 		CommandLineParser clp = new PosixParser();
 		CommandLine cl = null;
@@ -113,6 +124,13 @@ public abstract class Extractor {
                 maxTlpLevel.compareTo(minTlpLevel) < 0){
             System.err.println("Error: Maximum TLP level can not be below minimum TLP level");
             System.exit(-1);
+        }
+        // Check for output file
+        if(cl.hasOption(OUTPUT_FILE_OPTION)){
+            outFile = new File(cl.getOptionValue(OUTPUT_FILE_OPTION));
+            // Redirect stdout to the file
+            PrintStream out = new PrintStream(new BufferedOutputStream(new FileOutputStream(outFile)));
+            System.setOut(out);
         }
 		args = cl.getArgs();
 		if( args.length >= 2 ) {
@@ -282,4 +300,13 @@ public abstract class Extractor {
 		hf.setWidth(80);
 		hf.printHelp(usage, header, os, footer);
 	}
+
+    @Override
+    public void close(){
+        // If an output file was specified, we redirected stdout. Flush it
+        if(outFile != null){
+            System.out.flush();
+            System.out.close();
+        }
+    }
 }
