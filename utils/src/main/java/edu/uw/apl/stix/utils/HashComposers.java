@@ -186,7 +186,7 @@ public class HashComposers {
 	 * @param op
 	 * @return
 	 */
-    private static Observable inObservable(ObjectPropertiesType op) {
+    static Observable inObservable(ObjectPropertiesType op) {
         org.mitre.cybox.cybox_2.ObjectFactory of = new org.mitre.cybox.cybox_2.ObjectFactory();
         ObjectType obj = of.createObjectType();
         obj.setProperties(op);
@@ -200,7 +200,7 @@ public class HashComposers {
 	 * @param fileObjects
 	 * @return
 	 */
-    private static List<FileObjectType> asFileObjectHashes(List<FileObjectObservable> fileObjects) {
+    static List<FileObjectType> asFileObjectHashes(List<FileObjectObservable> fileObjects) {
         List<FileObjectType> result = new ArrayList<FileObjectType>();
         for(FileObjectObservable fileObject : fileObjects){
             FileObjectType fo = asFileObjectHash(fileObject);
