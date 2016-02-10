@@ -34,6 +34,7 @@ import org.mitre.cybox.cybox_2.ObjectType;
 import org.mitre.cybox.cybox_2.Observable;
 import org.mitre.cybox.cybox_2.Observables;
 import org.mitre.cybox.objects.DomainName;
+import org.mitre.cybox.objects.URIObjectType;
 import org.mitre.stix.common_1.IndicatorBaseType;
 import org.mitre.stix.indicator_2.Indicator;
 import org.mitre.stix.stix_1.IndicatorsType;
@@ -46,6 +47,50 @@ import org.mitre.stix.stix_1.STIXPackage;
  *
  */
 public class HostnameExtractors {
+
+    /**
+     * @param stixPackage - a STIX package to scan/parse
+     *
+     * @return a list containing all the URIs
+     * extracted from Observable/FileObjectType in the supplied package
+     */
+    static public List<String> extractURIs( STIXPackage stixPackage ) {
+        List<String> result = new LinkedList<String>();
+
+        // All top-level indicators, if any
+        IndicatorsType indicators = stixPackage.getIndicators();
+        if (indicators != null) {
+            for (IndicatorBaseType indicator : indicators.getIndicators()) {
+                try {
+                    Indicator ind = (Indicator) indicator;
+                    Observable observable = ind.getObservable();
+                    if (observable != null) {
+                        String hostname = getUriFromObservable(observable);
+                        if (hostname != null) {
+                            result.add(hostname);
+                        }
+                    }
+                } catch (Exception e) {
+                    // Ignore. Probably a null pointer exception
+                }
+            }
+        }
+
+        // All top-level observables, if any
+        Observables ot = stixPackage.getObservables();
+        if( ot == null ){
+            return result;
+        }
+
+        List<Observable> ots = ot.getObservables();
+        for( Observable el : ots ) {
+            String hostname = getUriFromObservable(el);
+            if(hostname != null){
+                result.add(hostname);
+            }
+        }
+        return result;
+    }
 
 	/**
 	 * @param stixPackage - a STIX package to scan/parse
@@ -91,13 +136,34 @@ public class HostnameExtractors {
 		return result;
 	}
 
+	/**
+	 * Get a URI from an observable, if it exists
+	 * @param observable
+	 * @return
+	 */
+    private static String getUriFromObservable(Observable observable){
+        ObjectType obj = observable.getObject();
+        ObjectPropertiesType opt = obj.getProperties();
+        // LOOK: any better way than instanceof, yuk!
+        if( opt instanceof URIObjectType){
+            URIObjectType uriType = (URIObjectType)opt;
+            return uriType.getValue().getValue().toString();
+        }
+        return null;
+    }
+
+    /**
+     * Get a host name from an observable, if it exists
+     * @param observable
+     * @return
+     */
 	private static String getHostnameFromObservable(Observable observable){
         ObjectType obj = observable.getObject();
         ObjectPropertiesType opt = obj.getProperties();
         // LOOK: any better way than instanceof, yuk!
         if( opt instanceof DomainName ) {
             DomainName fot = (DomainName)opt;
-            return (String) fot.getValue().getValue();
+            return fot.getValue().getValue().toString();
         }
         return null;
 	}

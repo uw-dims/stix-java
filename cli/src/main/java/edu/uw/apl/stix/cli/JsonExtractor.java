@@ -56,6 +56,7 @@ public class JsonExtractor extends Extractor {
 		    doc.setHeader(HeaderExtractor.getHeader(stixPackage));
 		    doc.setObservableFiles(HashExtractors.getFileObservables(stixPackage));
 		    doc.setObservableHostnames(HostnameExtractors.extractHostnames(stixPackage));
+		    doc.setObservableURIs(HostnameExtractors.extractURIs(stixPackage));
 		    doc.setObservableIpAddresses(IPExtractors.extractIPs(stixPackage));
 		    // Add it
 		    docs.add(doc);

@@ -43,6 +43,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
+import org.mitre.cybox.common_2.AnyURIObjectPropertyType;
 import org.mitre.cybox.common_2.DateTimeWithPrecisionType;
 import org.mitre.cybox.common_2.StringObjectPropertyType;
 import org.mitre.cybox.common_2.TimeType;
@@ -51,6 +52,7 @@ import org.mitre.cybox.cybox_2.Observables;
 import org.mitre.cybox.objects.Address;
 import org.mitre.cybox.objects.DomainName;
 import org.mitre.cybox.objects.FileObjectType;
+import org.mitre.cybox.objects.URIObjectType;
 import org.mitre.data_marking.extensions.markingstructure.TLPColorEnum;
 import org.mitre.data_marking.extensions.markingstructure.TLPMarkingStructureType;
 import org.mitre.data_marking.marking_1.MarkingSpecificationType;
@@ -120,6 +122,18 @@ public class SimpleSTIXComposer {
             Indicator indicator = new Indicator();
             indicator.setObservable(HashComposers.inObservable(domain));
             // Add it to the list
+            indicators.getIndicators().add(indicator);
+        }
+        // URI indicators
+        for(String uri : document.getObservableURIs()){
+            URIObjectType uriObject = new URIObjectType();
+            AnyURIObjectPropertyType value = new AnyURIObjectPropertyType();
+            value.setValue(uri);
+            uriObject.setValue(value);
+            // Wrap it in an indicator
+            Indicator indicator = new Indicator();
+            indicator.setObservable(HashComposers.inObservable(uriObject));
+            // Add it
             indicators.getIndicators().add(indicator);
         }
 

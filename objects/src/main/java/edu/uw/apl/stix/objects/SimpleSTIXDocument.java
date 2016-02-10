@@ -43,6 +43,7 @@ public class SimpleSTIXDocument {
     private SimpleSTIXHeader header;
     private List<String> observableIpAddresses;
     private List<String> observableHostnames;
+    private List<String> observableURIs;
     private List<FileObjectObservable> observableFiles;
 
     /**
@@ -81,7 +82,6 @@ public class SimpleSTIXDocument {
     public void setObservableHostnames(List<String> observableHostnames) {
         this.observableHostnames = observableHostnames;
     }
-
     /**
      * @return the observableFiles
      */
@@ -93,5 +93,17 @@ public class SimpleSTIXDocument {
      */
     public void setObservableFiles(List<FileObjectObservable> observableFiles) {
         this.observableFiles = observableFiles;
+    }
+    /**
+     * @return the observableURIs
+     */
+    public List<String> getObservableURIs() {
+        return observableURIs;
+    }
+    /**
+     * @param observableURIs the observableURIs to set
+     */
+    public void setObservableURIs(List<String> observableURIs) {
+        this.observableURIs = observableURIs;
     }
 }
