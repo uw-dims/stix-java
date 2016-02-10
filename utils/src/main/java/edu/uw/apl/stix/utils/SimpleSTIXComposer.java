@@ -49,6 +49,7 @@ import org.mitre.cybox.common_2.TimeType;
 import org.mitre.cybox.cybox_2.Observable;
 import org.mitre.cybox.cybox_2.Observables;
 import org.mitre.cybox.objects.Address;
+import org.mitre.cybox.objects.DomainName;
 import org.mitre.cybox.objects.FileObjectType;
 import org.mitre.data_marking.extensions.markingstructure.TLPColorEnum;
 import org.mitre.data_marking.extensions.markingstructure.TLPMarkingStructureType;
@@ -115,9 +116,9 @@ public class SimpleSTIXComposer {
         }
         // Hostname indicators
         for(String hostname : document.getObservableHostnames()){
-            Address address = getAddressType(hostname);
+            DomainName domain = getDomainType(hostname);
             Indicator indicator = new Indicator();
-            indicator.setObservable(HashComposers.inObservable(address));
+            indicator.setObservable(HashComposers.inObservable(domain));
             // Add it to the list
             indicators.getIndicators().add(indicator);
         }
@@ -138,6 +139,19 @@ public class SimpleSTIXComposer {
         value.setValue(ip);
         address.setAddressValue(value);
         return address;
+    }
+
+    /**
+     * Gte a {@link DomainName} object from a hostname string
+     * @param hostname
+     * @return
+     */
+    private static DomainName getDomainType(String hostname){
+        DomainName domain = new DomainName();
+        StringObjectPropertyType value = new StringObjectPropertyType();
+        value.setValue(hostname);
+        domain.setValue(value);
+        return domain;
     }
 
     /**
