@@ -6,12 +6,15 @@ Running
 Extracting Information
 ***********************
 
-There are three types of data that the STIX Java tools can process and extract from STIX
-documents: MD5 file hashes, IP addresses, and host names.
+There are multiple types of data that the STIX Java tools can process and extract from STIX
+documents: MD5 file hashes, file observable information, IP addresses, and host names.
 
-All the extraction tools take a single parameter, the input file. While they are parsing the file,
-they may print some XML syntax warnings to STDERR.
-When they have processed the file, they will print the results to STDOUT, one per line.
+All the extraction tools require a single parameter, the input file.
+You can specify the minimum and/or maximum TLP TLP level for documents with the ``-minTlp`` and ``-maxTlp`` options.
+For information on the TLP protocol, see `US-CERT <https://www.us-cert.gov/tlp>`_.
+
+While they are parsing the file,they may print some XML syntax warnings to STDERR. These can be ignored.
+When they have processed the file, they will print the results to STDOUT or a file specified by the ``-o`` option.
 
 
 ----------------
