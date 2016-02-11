@@ -16,6 +16,129 @@ For information on the TLP protocol, see `US-CERT <https://www.us-cert.gov/tlp>`
 While they are parsing the file,they may print some XML syntax warnings to STDERR. These can be ignored.
 When they have processed the file, they will print the results to STDOUT or a file specified by the ``-o`` option.
 
+----------------
+JSON Summary
+----------------
+
+To extract a JSON summary of a STIX document or bundle, use the ``stix.extract.json`` tool.
+This extract information fromt he header, including the ID, title, summary, production date, and TLP marking.
+Additionally, it extracts and IPs, hostnames, URIs, and file information from any observable indicators.
+
+It will always output a list of the JSON summary objects. The structure is as follows:
+
+.. code-block:: json
+
+  [
+    {
+      "header": {
+        "id": "CISCP:IB-01-23456",
+        "title": "Phishing Emails",
+        "description": "Emails were sent to try and steal credentials.",
+        "producedTime": "Jan 6, 2015 9:45:00 AM",
+        "marking": {
+          "level": "AMBER"
+        }
+      },
+      "observableIpAddresses": [],
+      "observableHostnames": [],
+      "observableURIs": [
+        "http://www.attachment.com/mail/u/0",
+        "http://www.attachment.com/mail/u/0",
+        "some-domain.com"
+      ],
+      "observableFiles": [
+        {
+          "fileName": "Not_Suspicious.pdf",
+          "fileSize": 0,
+          "hashes": {}
+        }
+      ]
+    },
+    {
+      "header": {
+        "id": "CISCP:IB-02-23456",
+        "title": "Phishing Emails Leads to Fraudulent Site",
+        "description": "This attachment fraudulent Outlook Webmail Site intended to steal credentials.",
+        "producedTime": "Jan 6, 2015 7:33:00 PM",
+        "marking": {
+          "level": "GREEN"
+        }
+      },
+      "observableIpAddresses": [],
+      "observableHostnames": [],
+      "observableURIs": [],
+      "observableFiles": [
+        {
+          "fileName": "Schedule.pdf",
+          "fileSize": 121686,
+          "hashes": {
+            "SHA256": "f82fdae7d2bcbad9888c700a2703e681e74e57a59797d19e3604e4de71cf32c9",
+            "SSDEEP": "SSDEEP-HASH-HERE",
+            "SHA1": "b42802b3f664feb7e8d4a96fa65dc277d6490a4b",
+            "MD5": "ca30122d21cae9239d9358b7ce0bf1c1"
+          }
+        }
+      ]
+    },
+    {
+      "header": {
+        "id": "CISCP:IB-03-23456",
+        "title": "Phishing Email, again",
+        "description": "More phising attempts",
+        "producedTime": "Jan 6, 2015 5:32:00 PM",
+        "marking": {
+          "level": "AMBER"
+        }
+      },
+      "observableIpAddresses": [],
+      "observableHostnames": [],
+      "observableURIs": [
+        "www.baddomain.com",
+        "baddomain2.com"
+      ],
+      "observableFiles": [
+        {
+          "fileName": "OpenMe.rar",
+          "fileSize": 1494376,
+          "hashes": {
+            "MD5": "2bdc8396eab8fdc6caa5b8e1747e55b4"
+          }
+        },
+        {
+          "fileName": "OpenMeToo.pdf",
+          "fileSize": 1265816,
+          "hashes": {
+            "MD5": "457c64d693e9f24bad3cd5b5a3a91e6c"
+          }
+        },
+        {
+          "fileName": "RunMe.exe",
+          "fileSize": 1215265,
+          "hashes": {
+            "MD5": "e10f870b62f7e17b8450ecbdd4e758b3"
+          }
+        },
+        {
+          "fileName": "expl0rer.File",
+          "fileSize": 280336,
+          "hashes": {
+            "MD5": "191dcd9adea47bd4361c7ba8db21a806"
+          }
+        },
+        {
+          "fileName": "1.bat",
+          "fileSize": 280336,
+          "hashes": {
+            "MD5": "6d84a2b7bc1b4836be81c20ad5f1a024"
+          }
+        }
+      ]
+    }
+  ]
+
+..
+
+
 
 ----------------
 MD5 File Hashes
