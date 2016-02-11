@@ -16,6 +16,8 @@ For information on the TLP protocol, see `US-CERT <https://www.us-cert.gov/tlp>`
 While they are parsing the file,they may print some XML syntax warnings to STDERR. These can be ignored.
 When they have processed the file, they will print the results to STDOUT or a file specified by the ``-o`` option.
 
+.. _jsonSummary:
+
 ----------------
 JSON Summary
 ----------------
@@ -271,7 +273,11 @@ Not all file observables have all the information.
 Creating a STIX Document
 *************************
 
-The STIX Java tool only supports creating a STIX document with file name and MD5 hash indicators.
+The STIX Java tool supports creating a STIX document from just file name and MD5 hash indicators, or from the :ref:`jsonSummary` section.
+
+---------------------
+From Only MD5 Hashes
+---------------------
 
 To create a document, use the ``stix.author.md5`` command and provide a list of MD5 hashes and file name pairs.
 
@@ -336,5 +342,93 @@ Example:
         </stix:Observables>
     </stix:STIX_Package>
     $
+
+..
+
+---------------------
+From a JSON Summary
+---------------------
+
+To create a document, use the ``stix.author.json`` command.
+You can specify an input file with the ``-i`` option, and an output file with the ``-o`` option.
+
+The input file can either be a single JSON summary object, or a list of them.
+The output will contain all the information from the input, formatted into a STIX document.
+
+For example, if the input was the first object from the :ref:`jsonSummary` section, the output will be:
+
+.. code-block:: xml
+
+  <?xml version="1.0" encoding="UTF-8"?>
+  <stix:STIX_Package id="CISCP:IB-01-23456"
+      xmlns:FileObj="http://cybox.mitre.org/objects#FileObject-2"
+      xmlns:URIObj="http://cybox.mitre.org/objects#URIObject-2"
+      xmlns:cybox="http://cybox.mitre.org/cybox-2"
+      xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
+      xmlns:indicator="http://stix.mitre.org/Indicator-2"
+      xmlns:marking="http://data-marking.mitre.org/Marking-1"
+
+      xmlns:stix="http://stix.mitre.org/stix-1"
+      xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1">
+      <stix:STIX_Header>
+          <stix:Title>Phishing Emails</stix:Title>
+          <stix:Description>Emails were sent to try and steal credentials.</stix:Description>
+          <stix:Handling>
+              <marking:Marking>
+                  <marking:Controlled_Structure>//node()</marking:Controlled_Structure>
+                  <marking:Marking_Structure color="AMBER"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tlpMarking:TLPMarkingStructureType"/>
+              </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+              <stixCommon:Time>
+                  <cyboxCommon:Produced_Time>2015-01-06T09:45:00.000-05:00</cyboxCommon:Produced_Time>
+              </stixCommon:Time>
+          </stix:Information_Source>
+      </stix:STIX_Header>
+      <stix:Observables cybox_major_version="2" cybox_minor_version="1">
+          <cybox:Observable>
+              <cybox:Object>
+                  <cybox:Properties
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="FileObj:FileObjectType">
+                      <FileObj:File_Name condition="Equals">Not_Suspicious.pdf</FileObj:File_Name>
+                      <FileObj:Hashes/>
+                  </cybox:Properties>
+              </cybox:Object>
+          </cybox:Observable>
+      </stix:Observables>
+      <stix:Indicators>
+          <stix:Indicator
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="indicator:IndicatorType">
+              <indicator:Observable>
+                  <cybox:Object>
+                      <cybox:Properties xsi:type="URIObj:URIObjectType">
+                          <URIObj:Value>http://www.attachment.com/mail/u/0</URIObj:Value>
+                      </cybox:Properties>
+                  </cybox:Object>
+              </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="indicator:IndicatorType">
+              <indicator:Observable>
+                  <cybox:Object>
+                      <cybox:Properties xsi:type="URIObj:URIObjectType">
+                          <URIObj:Value>http://www.attachment.com/mail/u/0</URIObj:Value>
+                      </cybox:Properties>
+                  </cybox:Object>
+              </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="indicator:IndicatorType">
+              <indicator:Observable>
+                  <cybox:Object>
+                      <cybox:Properties xsi:type="URIObj:URIObjectType">
+                          <URIObj:Value>some-domain.com</URIObj:Value>
+                      </cybox:Properties>
+                  </cybox:Object>
+              </indicator:Observable>
+          </stix:Indicator>
+      </stix:Indicators>
+  </stix:STIX_Package>
 
 ..
