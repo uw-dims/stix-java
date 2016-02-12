@@ -25,9 +25,11 @@ Indices and tables
 Versioning
 *************
 
-The STIX Java versioning is based on the supported STIX version.
-
-The first part of the version defines the STIX version, for example `120.x.x` supports STIX version `1.2.0`.
+Our major version number encodes the Mitre STIX release.  We
+try adhere to `Semantic Versioning <http://semver.org>`_, with
+the caveat that we have 'given up' our major version number to
+track Mitre's release number, leaving us only minor and patch
+numbers to work with.
 
 
 *************
