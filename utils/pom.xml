@@ -6,11 +6,11 @@
 		<groupId>edu.uw.apl.commons</groupId>
 		<artifactId>stix-parent</artifactId>
 		<!-- Our major version number encodes the Mitre STIX release -->
-		<version>120.0.2</version>
+		<version>120.0.3</version>
 	</parent>
 
 	<artifactId>stix-utils</artifactId>
-	<version>120.0.2</version>
+	<version>120.0.3</version>
 	<packaging>jar</packaging>
 	<name>STIX Java: Authoring, Extracting Utilities</name>
 
