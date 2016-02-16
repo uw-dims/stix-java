@@ -1,0 +1,385 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<CISCP:STIX_Packages xmlns:AddrObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:CISCP="http://www.us-cert.gov/ciscp" xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2" xmlns:FileObj="http://cybox.mitre.org/objects#FileObject-2" xmlns:URIObj="http://cybox.mitre.org/objects#URIObject-2" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:simpleMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xsi:schemaLocation="http://cybox.mitre.org/objects#DomainNameObject-1 http://cybox.mitre.org/XMLSchema/objects/Domain_Name/1.0/Domain_Name_Object.xsd&#10;http://cybox.mitre.org/objects#PortObject-2 http://cybox.mitre.org/XMLSchema/objects/Port/2.1/Port_Object.xsd&#10;http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd&#10;http://cybox.mitre.org/objects#WinRegistryKeyObject-2 http://cybox.mitre.org/XMLSchema/objects/Win_Registry_Key/2.1/Win_Registry_Key_Object.xsd&#10;http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.0/stix_default_vocabularies.xsd&#10;http://cybox.mitre.org/objects#FileObject-2 http://cybox.mitre.org/XMLSchema/objects/File/2.1/File_Object.xsd&#10;http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1/data_marking.xsd&#10;http://cybox.mitre.org/objects#SocketAddressObject-1 http://cybox.mitre.org/XMLSchema/objects/Socket_Address/1.1/Socket_Address_Object.xsd&#10;http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1/stix_common.xsd&#10;http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1/tlp_marking.xsd&#10;http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1/stix_core.xsd&#10;http://cybox.mitre.org/objects#LinkObject-1 http://cybox.mitre.org/XMLSchema/objects/Link/1.1/Link_Object.xsd&#10;http://cybox.mitre.org/objects#AddressObject-2 http://cybox.mitre.org/XMLSchema/objects/Address/2.1/Address_Object.xsd&#10;http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd&#10;http://cybox.mitre.org/objects#URIObject-2 http://cybox.mitre.org/XMLSchema/objects/URI/2.1/URI_Object.xsd&#10;http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1/indicator.xsd&#10;http://cybox.mitre.org/objects#EmailMessageObject-2 http://cybox.mitre.org/XMLSchema/objects/Email_Message/2.1/Email_Message_Object.xsd&#10;http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1 http://stix.mitre.org/XMLSchema/extensions/marking/simple/1.1/simple_marking.xsd&#10;http://cybox.mitre.org/objects#MutexObject-2 http://cybox.mitre.org/XMLSchema/objects/Mutex/2.1/Mutex_Object.xsd&#10;http://cybox.mitre.org/objects#NetworkConnectionObject-2 http://cybox.mitre.org/XMLSchema/objects/Network_Connection/2.1/Network_Connection_Object.xsd&#10;us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab.xsd&#10;http://cybox.mitre.org/objects#HTTPSessionObject-2 http://cybox.mitre.org/XMLSchema/objects/HTTP_Session/2.1/HTTP_Session_Object.xsd&#10;http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd&#10;">
+  <stix:STIX_Package id="CISCP:IB-11-23456" version="1.0">
+    <stix:STIX_Header>
+      <stix:Title>Phishing Email Scam 11/12</stix:Title>
+      <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators</stix:Package_Intent>
+      <stix:Description>Emails were sent to try and steal credentials and cookies</stix:Description>
+      <stix:Handling>
+        <marking:Marking>
+          <marking:Controlled_Structure>//node()</marking:Controlled_Structure>
+          <marking:Marking_Structure color="RED" xsi:type="tlpMarking:TLPMarkingStructureType" />
+        </marking:Marking>
+        <marking:Marking>
+          <marking:Controlled_Structure>//node()</marking:Controlled_Structure>
+          <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+            <simpleMarking:Statement>FOUO</simpleMarking:Statement>
+          </marking:Marking_Structure>
+        </marking:Marking>
+      </stix:Handling>
+      <stix:Information_Source>
+        <stixCommon:Time>
+          <cyboxCommon:Produced_Time>2015-01-06T09:45:00</cyboxCommon:Produced_Time>
+        </stixCommon:Time>
+      </stix:Information_Source>
+    </stix:STIX_Header>
+    <stix:Indicators>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">Malicious E-mail</indicator:Type>
+        <indicator:Description>This phishing email was made to appear from an official.</indicator:Description>
+        <indicator:Observable >
+          <cybox:Object>
+            <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+              <EmailMessageObj:Header>
+                <EmailMessageObj:Subject condition="Equals">Please Read</EmailMessageObj:Subject>
+              </EmailMessageObj:Header>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-01-27T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">Malicious E-mail with Attachment</indicator:Type>
+        <indicator:Description>Malicious PDF attachment</indicator:Description>
+        <indicator:Observable>
+          <cybox:Object>
+            <cybox:Properties xsi:type="FileObj:FileObjectType">
+              <FileObj:File_Name condition="Equals">Open_Me_Please.pdf</FileObj:File_Name>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-27T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">URL Watchlist</indicator:Type>
+        <indicator:Description>The following are the malicious hyperlink strings associated with this url</indicator:Description>
+        <indicator:Observable >
+          <cybox:Object>
+            <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+              <URIObj:Value condition="Equals">http://www.phishing.com/mail/u/0</URIObj:Value>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-27T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">URL Watchlist</indicator:Type>
+        <indicator:Description>The following are the malicious hyperlink strings associated with this url:</indicator:Description>
+        <indicator:Observable >
+          <cybox:Object>
+            <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+              <URIObj:Value condition="Equals">http://www.phishing.org/mail/u/0</URIObj:Value>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-27T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">Domain Watchlist</indicator:Type>
+        <indicator:Description>The Phishing emails  may originate from this domain.</indicator:Description>
+        <indicator:Observable>
+          <cybox:Object>
+            <cybox:Properties type="Domain Name" xsi:type="URIObj:URIObjectType">
+              <URIObj:Value condition="Equals">not-a-malicious-domain.com</URIObj:Value>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-27T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+    </stix:Indicators>
+    <stix:TTPs>
+      <stix:Kill_Chains>
+      </stix:Kill_Chains>
+    </stix:TTPs>
+  </stix:STIX_Package>
+  <stix:STIX_Package id="CISCP:IB-12-23456" version="1.0">
+    <stix:STIX_Header>
+      <stix:Title>Phishing Emails Leads to Fraudulent Site</stix:Title>
+      <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Phishing</stix:Package_Intent>
+      <stix:Description>This attachment fraudulent Outlook Webmail Site intended to steal credentials and pets.</stix:Description>
+      <stix:Handling>
+        <marking:Marking>
+          <marking:Controlled_Structure>//node()</marking:Controlled_Structure>
+          <marking:Marking_Structure color="AMBER" xsi:type="tlpMarking:TLPMarkingStructureType" />
+        </marking:Marking>
+      </stix:Handling>
+      <stix:Information_Source>
+        <stixCommon:Time>
+          <cyboxCommon:Produced_Time>2015-01-06T19:33:00</cyboxCommon:Produced_Time>
+        </stixCommon:Time>
+      </stix:Information_Source>
+    </stix:STIX_Header>
+    <stix:Indicators>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">Malicious E-mail</indicator:Type>
+        <indicator:Description>The emails were sent from multiple users and domains</indicator:Description>
+        <indicator:Observable>
+          <cybox:Object>
+            <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+              <EmailMessageObj:Header>
+                <EmailMessageObj:Subject condition="Equals">Email Alert!</EmailMessageObj:Subject>
+              </EmailMessageObj:Header>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-09-11T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">Malicious E-mail</indicator:Type>
+        <indicator:Description>The PDF contained text and a link to the fraudulent Microsoft Outlook Web Email login page.</indicator:Description>
+        <indicator:Observable>
+          <cybox:Object>
+            <cybox:Properties xsi:type="FileObj:FileObjectType">
+              <FileObj:File_Name condition="Equals">SendYourPets.pdf</FileObj:File_Name>
+              <FileObj:Size_In_Bytes condition="Equals">121686</FileObj:Size_In_Bytes>
+              <FileObj:Hashes>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                  <cyboxCommon:Simple_Hash_Value condition="Equals">253da8e464099631a9fe484c01b7d1e7</cyboxCommon:Simple_Hash_Value>
+                </cyboxCommon:Hash>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA1</cyboxCommon:Type>
+                  <cyboxCommon:Simple_Hash_Value condition="Equals">584836cb252436f3bf45a4f1c47286bea7d3b4af</cyboxCommon:Simple_Hash_Value>
+                </cyboxCommon:Hash>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA256</cyboxCommon:Type>
+                  <cyboxCommon:Simple_Hash_Value condition="Equals">3a877de258766bd3e7cdafd1fee3228a86e2beb58e319895973291d2c419ed97</cyboxCommon:Simple_Hash_Value>
+                </cyboxCommon:Hash>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">SSDEEP</cyboxCommon:Type>
+                  <cyboxCommon:Fuzzy_Hash_Value condition="Equals">SSDEEP-HASH-HERE</cyboxCommon:Fuzzy_Hash_Value>
+                </cyboxCommon:Hash>
+              </FileObj:Hashes>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-09-11T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+    </stix:Indicators>
+    <stix:TTPs>
+      <stix:Kill_Chains>
+      </stix:Kill_Chains>
+    </stix:TTPs>
+  </stix:STIX_Package>
+  <stix:STIX_Package id="CISCP:IB-13-23456" version="1.0">
+    <stix:STIX_Header>
+      <stix:Title>Phishing Email, again</stix:Title>
+      <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Phishing</stix:Package_Intent>
+      <stix:Description>More phising attempts. Go fish.</stix:Description>
+      <stix:Handling>
+        <marking:Marking>
+          <marking:Controlled_Structure>//node()</marking:Controlled_Structure>
+          <marking:Marking_Structure color="GREEN" xsi:type="tlpMarking:TLPMarkingStructureType" />
+        </marking:Marking>
+        <marking:Marking>
+          <marking:Controlled_Structure>//node()</marking:Controlled_Structure>
+          <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+            <simpleMarking:Statement>FOUO</simpleMarking:Statement>
+          </marking:Marking_Structure>
+        </marking:Marking>
+      </stix:Handling>
+      <stix:Information_Source>
+        <stixCommon:Time>
+          <cyboxCommon:Produced_Time>2015-01-06T17:32:00</cyboxCommon:Produced_Time>
+        </stixCommon:Time>
+      </stix:Information_Source>
+    </stix:STIX_Header>
+    <stix:Indicators>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">Malicious E-mail</indicator:Type>
+        <indicator:Description>The email body was blank.</indicator:Description>
+        <indicator:Observable >
+          <cybox:Object>
+            <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+              <EmailMessageObj:Header>
+                <EmailMessageObj:From category="e-mail">
+                  <AddrObj:Address_Value condition="Equals">user@email.com</AddrObj:Address_Value>
+                </EmailMessageObj:From>
+                <EmailMessageObj:Subject condition="Equals">GIVE ME YOUR INFO</EmailMessageObj:Subject>
+              </EmailMessageObj:Header>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-14T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">Malicious E-mail</indicator:Type>
+        <indicator:Description>This is a .rar archive containing bad stuff</indicator:Description>
+        <indicator:Observable>
+          <cybox:Object>
+            <cybox:Properties xsi:type="FileObj:FileObjectType">
+              <FileObj:File_Name condition="Equals">TotallyNotMalware.rar</FileObj:File_Name>
+              <FileObj:Size_In_Bytes condition="Equals">1494376</FileObj:Size_In_Bytes>
+              <FileObj:Hashes>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                  <cyboxCommon:Simple_Hash_Value condition="Equals">87510f0c2b767bf1d2cf205b8eff3ec3</cyboxCommon:Simple_Hash_Value>
+                </cyboxCommon:Hash>
+              </FileObj:Hashes>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-14T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="CISCP:IndicatorTypeVocab-0.0">Benign</indicator:Type>
+        <indicator:Description>This file is a benign decoy PDF document.</indicator:Description>
+        <indicator:Observable id="CISCP:Observable-66f03881-f014-4d7f-8439-1529603a57d4">
+          <cybox:Object id="CISCP:Object-223bac9c-abaa-42bc-84cd-d1574f1dbcee">
+            <cybox:Properties xsi:type="FileObj:FileObjectType">
+              <FileObj:File_Name condition="Equals">ActuallyNotMalicious.pdf</FileObj:File_Name>
+              <FileObj:Size_In_Bytes condition="Equals">1265816</FileObj:Size_In_Bytes>
+              <FileObj:Hashes>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                  <cyboxCommon:Simple_Hash_Value condition="Equals">79a371181af579f4dcedeb90181bb862</cyboxCommon:Simple_Hash_Value>
+                </cyboxCommon:Hash>
+              </FileObj:Hashes>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-14T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">Malware Artifacts</indicator:Type>
+        <indicator:Description>This is the malware.</indicator:Description>
+        <indicator:Observable >
+          <cybox:Object >
+            <cybox:Properties xsi:type="FileObj:FileObjectType">
+              <FileObj:File_Name condition="Equals">KillSystem32.exe</FileObj:File_Name>
+              <FileObj:Size_In_Bytes condition="Equals">1215265</FileObj:Size_In_Bytes>
+              <FileObj:Hashes>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                  <cyboxCommon:Simple_Hash_Value condition="Equals">70bc8f4b72a86921468bf8e8441dce51</cyboxCommon:Simple_Hash_Value>
+                </cyboxCommon:Hash>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA1</cyboxCommon:Type>
+                  <cyboxCommon:Simple_Hash_Value condition="Equals">de8a847bff8c343d69b853a215e6ee775ef2ef96</cyboxCommon:Simple_Hash_Value>
+                </cyboxCommon:Hash>
+              </FileObj:Hashes>
+            </cybox:Properties>
+            <cybox:Related_Objects>
+              <cybox:Related_Object >
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">otherfile.tmp</FileObj:File_Name>
+                  <FileObj:Size_In_Bytes condition="Equals">1815265</FileObj:Size_In_Bytes>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">336a082b2390bda125d83c01fe125e93</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+                <cybox:Relationship xsi:type="cyboxVocabs:ObjectRelationshipVocab-1.0">Contains</cybox:Relationship>
+              </cybox:Related_Object>
+            </cybox:Related_Objects>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-14T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">Malware Artifacts</indicator:Type>
+        <indicator:Description>More malware files</indicator:Description>
+        <indicator:Observable >
+          <cybox:Object>
+            <cybox:Properties xsi:type="FileObj:FileObjectType">
+              <FileObj:File_Name condition="Equals">BonsaiBuddy.File</FileObj:File_Name>
+              <FileObj:Size_In_Bytes condition="Equals">280336</FileObj:Size_In_Bytes>
+              <FileObj:Hashes>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                  <cyboxCommon:Simple_Hash_Value condition="Equals">30cf82be79cd5b2360a7eb5baebeb2c7</cyboxCommon:Simple_Hash_Value>
+                </cyboxCommon:Hash>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA1</cyboxCommon:Type>
+                  <cyboxCommon:Simple_Hash_Value condition="Equals">bcf3fcbaa23cbd30d0a5b5eb98ef36b4f7721c62</cyboxCommon:Simple_Hash_Value>
+                </cyboxCommon:Hash>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA256</cyboxCommon:Type>
+                  <cyboxCommon:Simple_Hash_Value condition="Equals">4efb28748a9135e55c116f1924b5e9d6a35fd19f1423c4102f9d015d2ca494f7</cyboxCommon:Simple_Hash_Value>
+                </cyboxCommon:Hash>
+              </FileObj:Hashes>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-14T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">Malware Artifacts</indicator:Type>
+        <indicator:Description>This is a malicious batch clean up script.</indicator:Description>
+        <indicator:Observable >
+          <cybox:Object >
+            <cybox:Properties xsi:type="FileObj:FileObjectType">
+              <FileObj:File_Name condition="Equals">bat.man</FileObj:File_Name>
+              <FileObj:Size_In_Bytes condition="Equals">280336</FileObj:Size_In_Bytes>
+              <FileObj:Hashes>
+                <cyboxCommon:Hash>
+                  <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                  <cyboxCommon:Simple_Hash_Value condition="Equals">278e14eb5d8f41b19e3e1876fbf7372d</cyboxCommon:Simple_Hash_Value>
+                </cyboxCommon:Hash>
+              </FileObj:Hashes>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-14T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator  version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">C2</indicator:Type>
+        <indicator:Description>When the files are launched they call out to this C2 through port 80.</indicator:Description>
+        <indicator:Observable >
+          <cybox:Object >
+            <cybox:Properties type="Domain Name" xsi:type="URIObj:URIObjectType">
+              <URIObj:Value condition="Equals">www.bat.man</URIObj:Value>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-14T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+      <stix:Indicator version="2.0" xsi:type="indicator:IndicatorType">
+        <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">C2</indicator:Type>
+        <indicator:Description>When the files are launched they call out to this C2 through port 80.</indicator:Description>
+        <indicator:Observable >
+          <cybox:Object >
+            <cybox:Properties type="Domain Name" xsi:type="URIObj:URIObjectType">
+              <URIObj:Value condition="Equals">bat.man.na.na.na.na</URIObj:Value>
+            </cybox:Properties>
+          </cybox:Object>
+        </indicator:Observable>
+        <indicator:Sightings sightings_count="1">
+          <indicator:Sighting timestamp="2015-08-14T00:00:00" />
+        </indicator:Sightings>
+      </stix:Indicator>
+    </stix:Indicators>
+    <stix:TTPs>
+    </stix:TTPs>
+  </stix:STIX_Package>
+</CISCP:STIX_Packages>
